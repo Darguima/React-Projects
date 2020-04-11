@@ -1,0 +1,33 @@
+#containerTitleButtons{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+
+    width: 90vw;
+    padding: 1px 0;
+
+    margin: 0 5vw;
+
+    background-color: #e9e9e9;
+
+    border-style: solid;
+    border-color: #5f5f5f88;
+    border-width: 1px;
+}
+
+.TitleButton{
+    display: inline-block;
+
+    margin: 0;
+    border: 0;
+    padding: auto;
+    
+    width: 16.6667%;
+
+    border-left-style: solid;
+    border-right-style: solid;
+    border-width: 1px;
+    border-color: #5f5f5f88;;
+
+    background-color: #e9e9e9;
+}

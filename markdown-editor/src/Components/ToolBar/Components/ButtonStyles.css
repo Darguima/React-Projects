@@ -1,0 +1,19 @@
+.StyleButton{
+    height: 3vh;
+    width: 3vh;
+
+    text-align: center;
+    vertical-align: center;
+
+    border: 0;
+}
+
+.ActionsButton{
+    margin: 6px 3px;
+
+    font-size: 0.75em;
+
+    text-align: center;
+    vertical-align: center;
+}
+

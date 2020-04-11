@@ -1,0 +1,71 @@
+#containerToolBar{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+
+    width: 90vw;
+    padding: 3px 0;
+
+    margin: 4vh 5vw;
+    margin-bottom: 0;
+
+    background-color: #e9e9e9;
+
+    border-style: solid;
+    border-color: #5f5f5f88;
+    border-width: 1px;
+}
+
+#cointainerActionButtons{
+    width: 25%;
+
+    display: flex;
+    flex-direction: row;
+
+    background-color: #e9e9e9;
+}
+
+#cointainerActionButtons .ButtonGroup{
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+
+    background-color: #e9e9e9;
+
+}
+
+#cointanerStyleButtons{
+    width: 75%;
+
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    margin: auto;
+
+    background-color: #e9e9e9;
+}
+
+#cointanerStyleButtons .ButtonGroup{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    width: 33%;
+
+    background-color: #e9e9e9;
+
+}
+
+.ButtonGroup button{
+    margin: 5px;
+}
+
+.ButtonGroup div{
+    margin: 5px;
+}
+
+.ButtonGroup .StyleButton{
+    background-color: #e9e9e9;
+}
