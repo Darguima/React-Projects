@@ -16,6 +16,13 @@ module.exports = {
         return res.json(user)
     },
 
+    async showByNick(req, res){
+
+        const user = await User.find({"nickname": req.params.nick})
+
+        return res.json(user)
+    },
+
     async store(req, res){
         const user = await User.create(req.body)
 
