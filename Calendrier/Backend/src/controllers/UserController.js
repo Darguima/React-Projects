@@ -20,7 +20,7 @@ module.exports = {
 
         const user = await User.find({"nickname": req.params.nick})
 
-        return res.json(user)
+        return res.json(user[0])
     },
 
     async store(req, res){
