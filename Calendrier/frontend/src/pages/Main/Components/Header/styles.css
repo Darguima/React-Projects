@@ -1,0 +1,9 @@
+header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgb(125, 220, 255);
+    /*rgb(79, 175, 204)*/
+}
