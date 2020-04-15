@@ -5,15 +5,16 @@ import ChangeYearButton from "./ChangeYearButton"
 
 import "./styles.css"
 
-export default class Header extends React.Component{
-    render(){
-        return(
-            <header>
-                <ConfigurationsButton />
-                Calendrier
-                2020
-                <ChangeYearButton />
-            </header>
-        )
-    }
+const Header = () => {
+    return(
+        <header>
+            <ConfigurationsButton id="configurationsButton"/>
+            <ChangeYearButton id="changeYearButton"/>
+            <div id="siteName">
+                <span>Calendrier</span>
+            </div>
+        </header>
+    )
 }
+
+export default Header
