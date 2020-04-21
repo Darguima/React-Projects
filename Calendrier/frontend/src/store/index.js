@@ -10,6 +10,7 @@ const inicalState = {
 
     sessionInfo: {
         year: new Date().getFullYear(),
+
         isChangeYearMenuOpen: false,
         changeYearMenuYearRange: [
             new Date().getFullYear() - 3,
@@ -19,8 +20,10 @@ const inicalState = {
             new Date().getFullYear() + 1,
             new Date().getFullYear() + 2,
             new Date().getFullYear() + 3,
-        ]
+        ],
 
+
+        isConfigurationsMenuOpen: false
     }
 }
 
@@ -36,6 +39,15 @@ function reducer(state = inicalState, action){
                     _id: action._id,
                     events: action.events,
                     nickname: action.nickname
+                }
+            }
+        
+        case "CHANGE_USER_DATA_NICK":
+            return {
+                ...state,
+                userInfo: {
+                    ...state.userInfo,
+                    nickname: action.newNickname
                 }
             }
         
@@ -58,13 +70,32 @@ function reducer(state = inicalState, action){
             }
         
         case "CHANGE_SESSION_INFO_CHANGE_YEAR_MENU_YEAR_RANGE":
-        return {
-            ...state,
-            sessionInfo: {
-                ...state.sessionInfo,
-                changeYearMenuYearRange: action.newChangeYearMenuYearRange
+            return {
+                ...state,
+                sessionInfo: {
+                    ...state.sessionInfo,
+                    changeYearMenuYearRange: action.newChangeYearMenuYearRange
+                }
             }
-        }
+        
+        case "CHANGE_SESSION_INFO_IS_CONFIGURATIONS_MENU_OPEN":
+            return {
+                ...state,
+                sessionInfo: {
+                    ...state.sessionInfo,
+                    isConfigurationsMenuOpen: action.newIsConfigurationsMenuOpen
+                }
+            }
+        
+        case "CHANGE_ANY_MENU_TO_THE_SAME_STATE":
+            return {
+                ...state,
+                sessionInfo: {
+                    ...state.sessionInfo,
+                    isConfigurationsMenuOpen: action.newState,
+                    isChangeYearMenuOpen: action.newState
+                }
+            }
     
         default:
             return state

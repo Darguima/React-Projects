@@ -5,9 +5,14 @@ import ChangeYearMenu from "./ChangeYearMenu"
 import "./styles.css"
 import { connect } from "react-redux"
 
-const ChangeYearButton = ({sessionInfo, refs, dispatch}) => {
+const ChangeYearButton = ({sessionInfo, dispatch}) => {
     
     const handleClickButton = () => {
+        dispatch({
+            type: "CHANGE_ANY_MENU_TO_THE_SAME_STATE",
+            newState: false
+        })
+
         dispatch({
             type: "CHANGE_SESSION_INFO_IS_CHANGE_YEAR_MENU_OPEN",
             newIsChangeYearMenuOpen: !sessionInfo.isChangeYearMenuOpen
@@ -20,7 +25,7 @@ const ChangeYearButton = ({sessionInfo, refs, dispatch}) => {
             <button id="changeYearButton" onClick={handleClickButton}>
                 <svg
                     id="Layer_1"
-                    enable-background="new 0 0 512 512"
+                    enableBackground="new 0 0 512 512"
                     viewBox="0 0 451.847 325.00"
                     xmlns="http://www.w3.org/2000/svg"
                     x="0px"
@@ -38,4 +43,4 @@ const ChangeYearButton = ({sessionInfo, refs, dispatch}) => {
     )
 }
 
-export default connect(state => ({sessionInfo: state.sessionInfo, refs: state.refs}))(ChangeYearButton)
+export default connect(state => ({sessionInfo: state.sessionInfo}))(ChangeYearButton)

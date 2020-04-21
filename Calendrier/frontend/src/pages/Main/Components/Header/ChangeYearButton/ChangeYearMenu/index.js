@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 
 import'./styles.css';
 import { connect } from 'react-redux';
@@ -50,6 +50,29 @@ const ChangeYearMenu = ({sessionInfo, dispatch}) => {
       ]
     })
   }
+
+  // Handle with Esc press to close menu
+
+  const closeMenu = useCallback(() => {
+    dispatch({
+      type: "CHANGE_SESSION_INFO_IS_CHANGE_YEAR_MENU_OPEN",
+      newIsChangeYearMenuOpen: false
+    })
+  }, [dispatch])
+
+  useEffect(() => {
+    function handleEscKeyPress({key}){
+      if (key === "Escape"){        
+        closeMenu()
+      }
+    }
+
+    document.addEventListener("keydown", handleEscKeyPress)
+
+    return () => {
+      document.removeEventListener("keydown", handleEscKeyPress)
+    }
+  }, [closeMenu])
 
   return (
     <table id="changeYearMenuContainer"><tbody>

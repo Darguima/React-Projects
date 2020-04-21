@@ -1,13 +1,13 @@
 #configurationsButtonContainer{
     display: flex;
     flex-direction: row;
-    justify-content: left;
     align-items: center;
-
-    background-color: rgb(125, 220, 255);
+    justify-content: left;
 
     width: 33%;
     height: 100%;
+    
+    position: relative;
 }
 
 #configurationsButton{

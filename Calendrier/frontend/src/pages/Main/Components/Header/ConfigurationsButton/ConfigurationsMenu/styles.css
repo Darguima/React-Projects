@@ -1,0 +1,63 @@
+#ConfigurationsMenuContainer{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: rgb(205, 242, 255);
+
+    height: auto;
+    width: auto;
+
+    top: 100%;
+    left: 0%;
+
+    padding: 3%;
+
+    border: 1px solid black;
+}
+
+#ConfigurationsMenuContainer section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+    width: auto;
+    min-width: 250px;
+    
+    padding: 3%;
+}
+
+#ConfigurationsMenuContainer section span{
+    width: 50%;
+    font-size: 1.3em;
+
+    text-align: center;
+}
+
+#ConfigurationsMenuContainer section input{
+    width: 50%;
+    font-size: 1.3em;
+
+    border: 2px solid green;
+    border-radius: 4px;
+
+    text-align: center;
+}
+
+#manageEventsButton, #deleteAccountButton{
+    font-size: 1.3em;
+
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+#ConfigurationsMenuContainer section #manageEventsButton:hover{
+    background-color: rgb(79, 175, 204);
+}
+
+#ConfigurationsMenuContainer section #deleteAccountButton:hover{
+    background-color: red;
+}
