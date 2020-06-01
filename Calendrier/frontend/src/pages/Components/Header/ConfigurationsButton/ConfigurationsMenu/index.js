@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-import calendrierApi from "../../../../../../services/calendrierApi"
+import calendrierApi from "../../../../../services/calendrierApi"
 
 import './styles.css';
 import { connect } from 'react-redux';

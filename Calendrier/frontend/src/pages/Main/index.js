@@ -4,7 +4,7 @@ import calendrierApi from "../../services/calendrierApi"
 
 import { connect } from "react-redux"
 
-import Header from "./Components/Header"
+import Header from "../Components/Header"
 import Months from "./Components/Months"
 
 import "./styles.css"
@@ -51,7 +51,7 @@ class Main extends React.Component{
     render(){
         return (
             <div id="mainContainer">
-                <Header />
+                <Header userId={this.props.match.params.userId}/>
                 <Months />
             </div>
         )

@@ -43,6 +43,11 @@ export const MonthButton = styled.td`
             height: 100%;
             text-decoration: none;
             color: black;
+
+            -webkit-user-select: none;
+            -moz-user-select: -moz-none;
+            -ms-user-select: none;
+            user-select: none;
         }
     }
 
