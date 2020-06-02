@@ -1,11 +1,17 @@
 import express from "express"
+import cors from "cors"
+import routes from "./routes"
+
+import path from "path"
 
 const app = express()
 
-app.get("/users", (request, response) => {
-    console.log("listagem de usuarios")
+app.use(cors())
 
-    response.json(["eu", "tu", "ele", "nos", "vos"])
-})
+app.use(express.json())
+
+app.use(routes)
+
+app.use("/uploads", express.static(path.resolve(__dirname, "..", "uploads")))
 
 app.listen(3001)
