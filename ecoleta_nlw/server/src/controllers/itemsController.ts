@@ -9,7 +9,9 @@ class ItemsController{
             return {
                 id: item.id,
                 name: item.title,
-                image_url: `http://localhost:3001/uploads/${item.image}`
+                //image_url: `http://localhost:3001/uploads/${item.image}`
+                //image_url: `http://192.168.1.60:3001/uploads/${item.image}`
+                image_url: `http://dsgdevbraga.ddns.net:3001/uploads/${item.image}`
             }
         })
     
