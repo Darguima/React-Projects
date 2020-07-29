@@ -31,27 +31,63 @@
 }
 
 #ConfigurationsMenuContainer section span{
-    width: 50%;
+    width: 45%;
     font-size: 1.3em;
 
     text-align: center;
 }
 
-#ConfigurationsMenuContainer section input{
-    width: 50%;
-    font-size: 1.3em;
+#ConfigurationsMenuContainer section #inputContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 
-    border: 2px solid green;
+    width: 55%;
+
+    border: 3px solid green;
     border-radius: 4px;
 
+    background-color: white;
+}
+
+#ConfigurationsMenuContainer section input{
+    width: 85%;
+    font-size: 1.3em;
+
     text-align: center;
+
+    border-right: 1px solid black;
+}
+
+#ConfigurationsMenuContainer section #changeNickButton{
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    width: 10%;
+    height: 100%;
+
+    background-color: #ffffff;
+
+}
+
+#ConfigurationsMenuContainer section #changeNickButton svg{
+    height: 3vh;
+    min-height: 14px;
+    width: 3vh;
+    min-width: 14px;
 }
 
 #manageEventsButton, #deleteAccountButton{
     font-size: 1.3em;
 
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: 4px;
+
+    background-color: #ececec;
 }
 
 #ConfigurationsMenuContainer section #manageEventsButton:hover{

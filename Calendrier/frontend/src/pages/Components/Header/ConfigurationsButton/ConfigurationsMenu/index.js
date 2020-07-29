@@ -1,51 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import calendrierApi from "../../../../../services/calendrierApi"
 
 import './styles.css';
-import { connect } from 'react-redux';
 
-const ConfigurationsMenu = ({userInfo, dispatch, isMenuClosing}) => {
-  const [nickInput, setNickInput] = useState({value: userInfo.nickname, newNickIsValid: true, initialNick: ""})
+import { connect } from "react-redux"
 
-  useEffect(() => {
-    setNickInput({...nickInput, initialNick: userInfo.nickname})
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+const ConfigurationsMenu = ({isMenuClosing, userInfo, setUserInfo, dispatch}) => {
+
+  const [nickInput, setNickInput] = useState(userInfo.nickname)
   
-  async function handleNickInputChange({target: {value, style}}){
-
-    try{
-      var userWithSameNickInfo = await calendrierApi.get(`/usersByNick/${value}`)
-    }
-
-    catch(err){
-      console.log("An error has occurred - perhaps a passive error:")
-      console.warn(err)
-
-      setNickInput({...nickInput, value, newNickIsValid: false})
-      style.borderColor = "red"
-
-      return
-    }
-
-    if (userWithSameNickInfo.data !== "" && value !== nickInput.initialNick){
-      setNickInput({...nickInput, value, newNickIsValid: false})
-      style.borderColor = "red"
-    }
-
-    else{
-      setNickInput({...nickInput, value, newNickIsValid: true})
-      style.borderColor = "green"
-    }
+  async function handleNickInputChange({target: {value}}){
+    setNickInput(value)
   }
-
+  
   // Handle with Enter/Esc press to close menu
-
-  // Variable to save the data on the server
-  const [isDataReadyToUpload, setIsDataReadyToUpload] = useState({value: false})
-
-
   const closeMenu = useCallback(() => {
     dispatch({
       type: "CHANGE_SESSION_INFO_IS_CONFIGURATIONS_MENU_OPEN",
@@ -53,11 +22,103 @@ const ConfigurationsMenu = ({userInfo, dispatch, isMenuClosing}) => {
     })
   }, [dispatch])
 
+  const divInputRef = useRef()
+  const deleteAccountButton = useRef()
+  
+  const handleChangeNickButtonPressed = useCallback(async () => {
+
+    if (nickInput === userInfo.nickname){
+      closeMenu()
+
+      return
+    }
+
+    try{
+    
+      //Verify if the nickname already exists
+      divInputRef.current.style.borderColor = "black"
+      const response = await calendrierApi.get(`/usersByNick/${nickInput}`)
+
+      if (response.data === ""){
+        try{
+          await calendrierApi.put(`/users/${userInfo._id}`, {...userInfo, nickname: nickInput})
+          setUserInfo({...userInfo, nickname: nickInput})
+          closeMenu()
+        }
+
+        catch(err){
+          console.warn(err)
+        }
+      }
+
+      else{
+        divInputRef.current.style.borderColor = "red"
+      }
+
+    }
+
+    catch(err){
+      divInputRef.current.style.borderColor = "red"
+
+      console.log("Don't worry: (I think)")
+      console.warn(err)
+    }
+  }, [nickInput, closeMenu, userInfo, setUserInfo])
+
+
+  const [reconfirmedDeletAccount, setReconfirmedDeletAccount] = useState(false)
+  
+  const handleDeleteAccountButtonPressed = async () => {
+
+    if (!reconfirmedDeletAccount){
+      deleteAccountButton.current.innerText = "Wait!"
+      deleteAccountButton.current.style.backgroundColor = "rgb(255, 130, 0)" 
+      
+      setTimeout(() => {
+        
+        deleteAccountButton.current.addEventListener("mouseenter", () => {
+          deleteAccountButton.current.style.backgroundColor = "red"
+        })
+
+        deleteAccountButton.current.addEventListener("mouseleave", () => {
+          deleteAccountButton.current.style.backgroundColor = "#ececec"
+        })
+
+
+        deleteAccountButton.current.innerText = "Press me again to confirm!"
+        deleteAccountButton.current.style.backgroundColor = "#ececec"
+      }, 1000)
+
+      setReconfirmedDeletAccount(true)
+    }
+
+    else{
+      try{
+        deleteAccountButton.current.innerText = "Press me again to confirm!"
+        deleteAccountButton.current.style.backgroundColor = "rgb(255, 75, 0)"
+
+        await calendrierApi.delete(`/users/${userInfo._id}`)
+
+        alert("Conta eliminada com Sucesso")
+
+        window.location.href = `/`
+      }
+
+      catch(err){
+        console.warn(err)
+      }
+    }
+  
+  }
+
+
   useEffect(() => {
     function handleEnterOrEscKeyPress({key}){
-      if (key === "Enter" || key === "Escape"){
-        
-        setIsDataReadyToUpload({value: true})
+      if (key === "Enter"){
+        handleChangeNickButtonPressed()
+      }
+
+      if (key === "Escape"){
         closeMenu()
       }
     }
@@ -67,45 +128,39 @@ const ConfigurationsMenu = ({userInfo, dispatch, isMenuClosing}) => {
     return () => {
       document.removeEventListener("keydown", handleEnterOrEscKeyPress)
     }
-  }, [closeMenu])
-
-  // Handle with buttonConfig press to close menu
-
-  useEffect(() => {
-    setIsDataReadyToUpload({value: isMenuClosing})
-  }, [isMenuClosing])
-
-  // Handle with the menu exit to save the data in the server
-
-  const saveNewNickOnTheServer = async () => {
-    if (nickInput.newNickIsValid && nickInput.value !== nickInput.initialNick){
-      await calendrierApi.put(`users/${userInfo._id}`, {nickname: nickInput.value})
-
-      dispatch({
-        type: "CHANGE_USER_DATA_NICK",
-        newNickname: nickInput.value
-      })
-    }
-  }
-
-  useEffect(() => {
-    if (isDataReadyToUpload){
-      saveNewNickOnTheServer()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDataReadyToUpload, isMenuClosing])
+  }, [closeMenu, handleChangeNickButtonPressed])
 
   return (
     <div id="ConfigurationsMenuContainer">
 
       <section>
         <span>Nickname:</span> 
-        <input 
-          value={nickInput.value}
-          onChange={handleNickInputChange}
-          type="text"
-          autoFocus={true}
-        />
+
+        <div id="inputContainer" ref={divInputRef}>
+
+          <input 
+            value={nickInput}
+            onChange={handleNickInputChange}
+            type="text"
+            autoFocus={true}
+          />
+          <button id="changeNickButton" onClick={handleChangeNickButtonPressed}>
+
+            <svg
+              enableBackground="new 0 0 451.846 451.847;"
+              viewBox="0 0 451.846 451.847"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M345.441,248.292L151.154,442.573c-12.359,12.365-32.397,12.365-44.75,0c-12.354-12.354-12.354-32.391,0-44.744
+                L278.318,225.92L106.409,54.017c-12.354-12.359-12.354-32.394,0-44.748c12.354-12.359,32.391-12.359,44.75,0l194.287,194.284
+                c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,248.292z"
+              />
+            </svg>
+
+          </button>
+
+        </div>
+
       </section>
 
       <section>
@@ -116,7 +171,13 @@ const ConfigurationsMenu = ({userInfo, dispatch, isMenuClosing}) => {
 
       <section>
 
-        <button id="deleteAccountButton">Delete Account</button>
+        <button
+          id="deleteAccountButton" 
+          ref={deleteAccountButton}
+          onClick={handleDeleteAccountButtonPressed}
+        >
+          Delete Account
+        </button>
 
       </section>
 
@@ -124,4 +185,4 @@ const ConfigurationsMenu = ({userInfo, dispatch, isMenuClosing}) => {
   )
 }
 
-export default connect(state => ({userInfo: state.userInfo}))(ConfigurationsMenu)
+export default connect(state => ({sessionInfo: state.sessionInfo}))(ConfigurationsMenu)

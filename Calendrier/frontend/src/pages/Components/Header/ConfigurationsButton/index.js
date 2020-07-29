@@ -1,4 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useRouteMatch } from "react-router-dom"
+
+import calendrierApi from "../../../../services/calendrierApi"
 
 
 import ConfigurationsMenu from "./ConfigurationsMenu"
@@ -6,9 +9,32 @@ import ConfigurationsMenu from "./ConfigurationsMenu"
 import './styles.css'
 import { connect } from 'react-redux'
 
- const ConfigurationsButton = ({sessionInfo, dispatch}) => {
+const ConfigurationsButton = ({sessionInfo, dispatch}) => {
 
   const [isMenuClosing, setIsMenuClosing] = useState({value: false})
+
+  const [userId] = useState(useRouteMatch().params.userId)
+  const [userInfo, setUserInfo] = useState(null)
+  
+  useEffect(() => {
+    async function fetchData() {
+    
+      try{
+        const {data} = await calendrierApi.get(`/users/${userId}`)
+        setUserInfo(data)
+      }
+
+      catch(err){
+        console.error(err)
+        alert("Erro - A reiniciar pagina")
+
+        window.location.href = `/`
+      }
+    }
+
+    fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId])
 
   const handleClickButton = () => {
     dispatch({
@@ -28,7 +54,6 @@ import { connect } from 'react-redux'
     <div id="configurationsButtonContainer">
         <button id="configurationsButton" onClick={handleClickButton}>
           <svg 
-            id="Layer_1"
             enableBackground="new 0 0 512 512"
             viewBox="0 0 512 512"
             xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +64,11 @@ import { connect } from 'react-redux'
         </button>
 
         {sessionInfo.isConfigurationsMenuOpen && 
-            <ConfigurationsMenu isMenuClosing={isMenuClosing}/>
+            <ConfigurationsMenu
+              isMenuClosing={isMenuClosing}
+              userInfo={userInfo}
+              setUserInfo={setUserInfo}
+            />
         }
       </div>
   )
