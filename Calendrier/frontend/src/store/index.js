@@ -1,12 +1,6 @@
 import { createStore } from "redux";
 
 const inicalState = {
-    userInfo: {
-        __v: null,
-        _id: null,
-        events: null,
-        nickname: null,
-    }, 
 
     sessionInfo: {
         year: new Date().getFullYear(),
@@ -23,34 +17,16 @@ const inicalState = {
         ],
 
 
-        isConfigurationsMenuOpen: false
+        isConfigurationsMenuOpen: false,
+
+        isDayEventCreatorOpened: false,
     }
 }
 
 function reducer(state = inicalState, action){
 
     switch (action.type){
-        case "CHANGE_USER_DATA":
-            return {
-                ...state,
-                userInfo: {
-                    ...state.userInfo,
-                    __v: action.__v,
-                    _id: action._id,
-                    events: action.events,
-                    nickname: action.nickname
-                }
-            }
-        
-        case "CHANGE_USER_DATA_NICK":
-            return {
-                ...state,
-                userInfo: {
-                    ...state.userInfo,
-                    nickname: action.newNickname
-                }
-            }
-        
+       
         case "CHANGE_SESSION_INFO_YEAR":
             return {
                 ...state,
@@ -87,13 +63,23 @@ function reducer(state = inicalState, action){
                 }
             }
         
+        case "CHANGE_SESSION_INFO_IS_DAY_EVENT_CREATOR_OPENED":
+        return {
+            ...state,
+            sessionInfo: {
+                ...state.sessionInfo,
+                isDayEventCreatorOpened: action.newIsDayEventCreatorOpened
+            }
+        }
+        
         case "CHANGE_ANY_MENU_TO_THE_SAME_STATE":
             return {
                 ...state,
                 sessionInfo: {
                     ...state.sessionInfo,
                     isConfigurationsMenuOpen: action.newState,
-                    isChangeYearMenuOpen: action.newState
+                    isChangeYearMenuOpen: action.newState,
+                    isDayEventCreatorOpened: action.newState,
                 }
             }
     

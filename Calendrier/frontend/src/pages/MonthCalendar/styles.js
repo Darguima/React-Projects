@@ -54,13 +54,23 @@ export const DayButton = styled.td`
             user-select: none;
         }
     }
+`
 
-    div:hover{
+
+
+export const Button = styled.button`
+
+    height: 100%;
+    width: 100%;
+
+    background-color: rgb(82, 201, 237);
+
+    :hover{
         font-weight: bold;
 
         background-color: rgb(79, 175, 204);
 
         transition: 0.2s
     }
-`
 
+`

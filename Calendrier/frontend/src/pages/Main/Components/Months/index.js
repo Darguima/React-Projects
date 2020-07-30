@@ -1,11 +1,10 @@
-import React from 'react';
-import {Link} from "react-router-dom"
+import React, { useState } from 'react';
+
+import {Link, useRouteMatch} from "react-router-dom"
 
 import { MonthsContainer, MonthButtonsTableContainer, MonthButtonsTr, MonthButton } from "./styles"
 
-import { connect } from "react-redux"
-
-const Months = ({userInfo}) => {
+const Months = () => {
   const screenSizes = {
     width: window.innerWidth,
     height: window.innerHeight,
@@ -13,6 +12,8 @@ const Months = ({userInfo}) => {
     ratio: null,
     proportions: null
   }
+
+  const [userId] = useState(useRouteMatch().params.userId)
 
   screenSizes.componentHeight = screenSizes.height * 0.07 <= 30 ? screenSizes.height - 30 : screenSizes.height * 0.93
 
@@ -44,25 +45,12 @@ const Months = ({userInfo}) => {
         <MonthButtonsTr>
           <MonthButton columnWidth={screenSizes.width / 2}>
             <div className="LinkContainer">
-              <Link to={`/month/January/${userInfo._id}`}> January </Link>
+              <Link to={`/month/January/${userId}`}> January </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 2}>
             <div className="LinkContainer">
-              <Link to={`/month/February/${userInfo._id}`}> February </Link>
-            </div>
-          </MonthButton>
-        </MonthButtonsTr>
-
-        <MonthButtonsTr>
-          <MonthButton columnWidth={screenSizes.width / 2}>
-            <div className="LinkContainer">
-              <Link to={`/month/March/${userInfo._id}`}> March </Link>
-            </div>
-          </MonthButton>
-          <MonthButton columnWidth={screenSizes.width / 2}>
-            <div className="LinkContainer">
-              <Link to={`/month/April/${userInfo._id}`}> April </Link>
+              <Link to={`/month/February/${userId}`}> February </Link>
             </div>
           </MonthButton>
         </MonthButtonsTr>
@@ -70,25 +58,12 @@ const Months = ({userInfo}) => {
         <MonthButtonsTr>
           <MonthButton columnWidth={screenSizes.width / 2}>
             <div className="LinkContainer">
-              <Link to={`/month/May/${userInfo._id}`}> May </Link>
+              <Link to={`/month/March/${userId}`}> March </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 2}>
             <div className="LinkContainer">
-              <Link to={`/month/June/${userInfo._id}`}> June </Link>
-            </div>
-          </MonthButton>
-        </MonthButtonsTr>
-
-        <MonthButtonsTr>
-          <MonthButton columnWidth={screenSizes.width / 2}>
-            <div className="LinkContainer">
-              <Link to={`/month/July/${userInfo._id}`}> July </Link>
-            </div>
-          </MonthButton>
-          <MonthButton columnWidth={screenSizes.width / 2}>
-            <div className="LinkContainer">
-              <Link to={`/month/August/${userInfo._id}`}> August </Link>
+              <Link to={`/month/April/${userId}`}> April </Link>
             </div>
           </MonthButton>
         </MonthButtonsTr>
@@ -96,12 +71,12 @@ const Months = ({userInfo}) => {
         <MonthButtonsTr>
           <MonthButton columnWidth={screenSizes.width / 2}>
             <div className="LinkContainer">
-              <Link to={`/month/September/${userInfo._id}`}> September </Link>
+              <Link to={`/month/May/${userId}`}> May </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 2}>
             <div className="LinkContainer">
-              <Link to={`/month/October/${userInfo._id}`}> October </Link>
+              <Link to={`/month/June/${userId}`}> June </Link>
             </div>
           </MonthButton>
         </MonthButtonsTr>
@@ -109,12 +84,38 @@ const Months = ({userInfo}) => {
         <MonthButtonsTr>
           <MonthButton columnWidth={screenSizes.width / 2}>
             <div className="LinkContainer">
-              <Link to={`/month/November/${userInfo._id}`}> November </Link>
+              <Link to={`/month/July/${userId}`}> July </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 2}>
             <div className="LinkContainer">
-              <Link to={`/month/December/${userInfo._id}`}> December </Link>
+              <Link to={`/month/August/${userId}`}> August </Link>
+            </div>
+          </MonthButton>
+        </MonthButtonsTr>
+
+        <MonthButtonsTr>
+          <MonthButton columnWidth={screenSizes.width / 2}>
+            <div className="LinkContainer">
+              <Link to={`/month/September/${userId}`}> September </Link>
+            </div>
+          </MonthButton>
+          <MonthButton columnWidth={screenSizes.width / 2}>
+            <div className="LinkContainer">
+              <Link to={`/month/October/${userId}`}> October </Link>
+            </div>
+          </MonthButton>
+        </MonthButtonsTr>
+
+        <MonthButtonsTr>
+          <MonthButton columnWidth={screenSizes.width / 2}>
+            <div className="LinkContainer">
+              <Link to={`/month/November/${userId}`}> November </Link>
+            </div>
+          </MonthButton>
+          <MonthButton columnWidth={screenSizes.width / 2}>
+            <div className="LinkContainer">
+              <Link to={`/month/December/${userId}`}> December </Link>
             </div>
           </MonthButton>
         </MonthButtonsTr>
@@ -126,35 +127,17 @@ const Months = ({userInfo}) => {
         <MonthButtonsTr>
           <MonthButton columnWidth={screenSizes.width / 3}>
             <div className="LinkContainer">
-              <Link to={`/month/January/${userInfo._id}`}> January </Link>
+              <Link to={`/month/January/${userId}`}> January </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 3}>
             <div className="LinkContainer">
-              <Link to={`/month/February/${userInfo._id}`}> February </Link>
+              <Link to={`/month/February/${userId}`}> February </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 3}>
             <div className="LinkContainer">
-              <Link to={`/month/March/${userInfo._id}`}> March </Link>
-            </div>
-          </MonthButton>
-        </MonthButtonsTr>
-
-        <MonthButtonsTr>
-          <MonthButton columnWidth={screenSizes.width / 3}>
-            <div className="LinkContainer">
-              <Link to={`/month/April/${userInfo._id}`}> April </Link>
-            </div>
-          </MonthButton>
-          <MonthButton columnWidth={screenSizes.width / 3}>
-            <div className="LinkContainer">
-              <Link to={`/month/May/${userInfo._id}`}> May </Link>
-            </div>
-          </MonthButton>
-          <MonthButton columnWidth={screenSizes.width / 3}>
-            <div className="LinkContainer">
-            <Link to={`/month/June/${userInfo._id}`}> June </Link>
+              <Link to={`/month/March/${userId}`}> March </Link>
             </div>
           </MonthButton>
         </MonthButtonsTr>
@@ -162,17 +145,17 @@ const Months = ({userInfo}) => {
         <MonthButtonsTr>
           <MonthButton columnWidth={screenSizes.width / 3}>
             <div className="LinkContainer">
-              <Link to={`/month/July/${userInfo._id}`}> July </Link>
+              <Link to={`/month/April/${userId}`}> April </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 3}>
             <div className="LinkContainer">
-            <Link to={`/month/August/${userInfo._id}`}> August </Link>
+              <Link to={`/month/May/${userId}`}> May </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 3}>
             <div className="LinkContainer">
-              <Link to={`/month/September/${userInfo._id}`}> September </Link>
+            <Link to={`/month/June/${userId}`}> June </Link>
             </div>
           </MonthButton>
         </MonthButtonsTr>
@@ -180,17 +163,35 @@ const Months = ({userInfo}) => {
         <MonthButtonsTr>
           <MonthButton columnWidth={screenSizes.width / 3}>
             <div className="LinkContainer">
-              <Link to={`/month/October/${userInfo._id}`}> October </Link>
+              <Link to={`/month/July/${userId}`}> July </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 3}>
             <div className="LinkContainer">
-              <Link to={`/month/November/${userInfo._id}`}> November </Link>
+            <Link to={`/month/August/${userId}`}> August </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 3}>
             <div className="LinkContainer">
-              <Link to={`/month/December/${userInfo._id}`}> December </Link>
+              <Link to={`/month/September/${userId}`}> September </Link>
+            </div>
+          </MonthButton>
+        </MonthButtonsTr>
+
+        <MonthButtonsTr>
+          <MonthButton columnWidth={screenSizes.width / 3}>
+            <div className="LinkContainer">
+              <Link to={`/month/October/${userId}`}> October </Link>
+            </div>
+          </MonthButton>
+          <MonthButton columnWidth={screenSizes.width / 3}>
+            <div className="LinkContainer">
+              <Link to={`/month/November/${userId}`}> November </Link>
+            </div>
+          </MonthButton>
+          <MonthButton columnWidth={screenSizes.width / 3}>
+            <div className="LinkContainer">
+              <Link to={`/month/December/${userId}`}> December </Link>
             </div>
           </MonthButton>
         </MonthButtonsTr>
@@ -204,45 +205,22 @@ const Months = ({userInfo}) => {
         <MonthButtonsTr>
           <MonthButton columnWidth={screenSizes.width / 4}>
             <div className="LinkContainer">
-              <Link to={`/month/January/${userInfo._id}`}> January </Link>
+              <Link to={`/month/January/${userId}`}> January </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 4}>
             <div className="LinkContainer">
-              <Link to={`/month/February/${userInfo._id}`}> February </Link>
+              <Link to={`/month/February/${userId}`}> February </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 4}>
             <div className="LinkContainer">
-              <Link to={`/month/March/${userInfo._id}`}> March </Link>
+              <Link to={`/month/March/${userId}`}> March </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 4}>
             <div className="LinkContainer">
-              <Link to={`/month/April/${userInfo._id}`}> April </Link>
-            </div>
-          </MonthButton>
-        </MonthButtonsTr>
-
-        <MonthButtonsTr>
-          <MonthButton columnWidth={screenSizes.width / 4}>
-            <div className="LinkContainer">
-              <Link to={`/month/May/${userInfo._id}`}> May </Link>
-            </div>
-          </MonthButton>
-          <MonthButton columnWidth={screenSizes.width / 4}>
-            <div className="LinkContainer">
-              <Link to={`/month/June/${userInfo._id}`}> June </Link>
-            </div>
-          </MonthButton>
-          <MonthButton columnWidth={screenSizes.width / 4}>
-            <div className="LinkContainer">
-              <Link to={`/month/July/${userInfo._id}`}> July </Link>
-            </div>
-          </MonthButton>
-          <MonthButton columnWidth={screenSizes.width / 4}>
-            <div className="LinkContainer">
-              <Link to={`/month/August/${userInfo._id}`}> August </Link>
+              <Link to={`/month/April/${userId}`}> April </Link>
             </div>
           </MonthButton>
         </MonthButtonsTr>
@@ -250,22 +228,45 @@ const Months = ({userInfo}) => {
         <MonthButtonsTr>
           <MonthButton columnWidth={screenSizes.width / 4}>
             <div className="LinkContainer">
-              <Link to={`/month/September/${userInfo._id}`}> September </Link>
+              <Link to={`/month/May/${userId}`}> May </Link>
             </div>
           </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 4}>
             <div className="LinkContainer">
-              <Link to={`/month/October/${userInfo._id}`}> October </Link>
+              <Link to={`/month/June/${userId}`}> June </Link>
+            </div>
+          </MonthButton>
+          <MonthButton columnWidth={screenSizes.width / 4}>
+            <div className="LinkContainer">
+              <Link to={`/month/July/${userId}`}> July </Link>
+            </div>
+          </MonthButton>
+          <MonthButton columnWidth={screenSizes.width / 4}>
+            <div className="LinkContainer">
+              <Link to={`/month/August/${userId}`}> August </Link>
+            </div>
+          </MonthButton>
+        </MonthButtonsTr>
+
+        <MonthButtonsTr>
+          <MonthButton columnWidth={screenSizes.width / 4}>
+            <div className="LinkContainer">
+              <Link to={`/month/September/${userId}`}> September </Link>
+            </div>
+          </MonthButton>
+          <MonthButton columnWidth={screenSizes.width / 4}>
+            <div className="LinkContainer">
+              <Link to={`/month/October/${userId}`}> October </Link>
           </div>
         </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 4}>
             <div className="LinkContainer">
-              <Link to={`/month/November/${userInfo._id}`}> November </Link>
+              <Link to={`/month/November/${userId}`}> November </Link>
           </div>
         </MonthButton>
           <MonthButton columnWidth={screenSizes.width / 4}>
             <div className="LinkContainer">
-              <Link to={`/month/December/${userInfo._id}`}> December </Link>
+              <Link to={`/month/December/${userId}`}> December </Link>
             </div>
           </MonthButton>
         </MonthButtonsTr>
@@ -278,4 +279,4 @@ const Months = ({userInfo}) => {
   )
 }
 
-export default connect(state => ({userInfo: state.userInfo}))(Months)
+export default Months

@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useRouteMatch } from "react-router-dom"
 
 import Header from "../Components/Header";
 
-import { MonthCalendarContainer, DayButtonsTableContainer, DayButtonsTr,  DayButton } from './styles';
+import { MonthCalendarContainer, DayButtonsTableContainer, DayButtonsTr,  DayButton, Button } from './styles';
+
+import DayEventCreator from "./Components/DayEventCreator"
 
 import { connect } from "react-redux"
 
-const MonthCalendar = props => {
-  const {sessionInfo} = props
+const MonthCalendar = ({sessionInfo, dispatch}) => {
+  const [monthName] = useState(useRouteMatch().params.monthName)
+
+  const [timeInfo, setTimeInfo] = useState({
+    selectedYear: sessionInfo.year,
+    selectedMonth: monthName,
+    selectedDay: null,
+  })
 
   // Number of days on the month
-
-  const {monthName} = props.match.params
-
   var daysOfMonth
 
   if (monthName === "January"){
@@ -116,9 +122,25 @@ const MonthCalendar = props => {
     days.push(column)
   }
 
+
+  const handleDayButtonPressed = (day) => {
+    setTimeInfo({...timeInfo, selectedDay: Number(day)})
+
+    dispatch({
+      type: "CHANGE_ANY_MENU_TO_THE_SAME_STATE",
+      newState: false
+    })
+
+    dispatch({
+      type: "CHANGE_SESSION_INFO_IS_DAY_EVENT_CREATOR_OPENED",
+      newIsDayEventCreatorOpened: true
+    })
+  }
+
   return (
   <>
-  <Header userId={props.match.params.userId}/>
+  <Header/>
+  
 
   <MonthCalendarContainer>
     <DayButtonsTableContainer>
@@ -128,9 +150,10 @@ const MonthCalendar = props => {
                                     /*5 because have the header in screenSizes.height*/}>
           {value_parent.map((value, index) => (
             <DayButton key={index}>
-              <div className="LinkContainer">
-                {/*<Link to={`/month/January/${userInfo._id}`}> January </Link>*/}
-                {value}
+              <div className="ButtonContainer">
+                <Button onClick={() => handleDayButtonPressed(value)}>
+                  {value}
+                </Button>
               </div>
             </DayButton>
           ))}
@@ -139,6 +162,13 @@ const MonthCalendar = props => {
     </tbody>
     </DayButtonsTableContainer>
   </MonthCalendarContainer>
+
+  {sessionInfo.isDayEventCreatorOpened &&
+    <DayEventCreator 
+      timeInfo={timeInfo}
+    />
+  }
+
   </>
   )
 }
