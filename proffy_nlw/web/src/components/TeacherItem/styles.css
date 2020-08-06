@@ -59,7 +59,7 @@
     display: block;
 }
 
-.teacher-item footer button {
+.teacher-item footer a {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -73,9 +73,10 @@
     cursor: pointer;
     font: 700 1.4rem Archive;
     transition: 0.2s;
+    text-decoration: none;
 }
 
-.teacher-item footer button:hover{
+.teacher-item footer a:hover{
     background: var(--color-secundary-dark);
 }
 
