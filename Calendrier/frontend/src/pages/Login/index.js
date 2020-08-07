@@ -27,7 +27,7 @@ export default class Login extends React.Component{
 
     login = async nick => {
         try{
-            var userInfo = await calendrierApi.get(`/usersByNick/${nick}`)
+            var userInfo = await calendrierApi.get(`usersByNick/${nick}`)
         }
         catch(err){
             console.error(err)

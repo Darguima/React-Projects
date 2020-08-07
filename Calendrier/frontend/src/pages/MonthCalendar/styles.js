@@ -24,16 +24,16 @@ export const DayButtonsTr = styled.tr`
 export const DayButton = styled.td`
     height: 90%;
 
-    div{
+    .ButtonContainer{
 
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
 
         width: 50%;
         height: 100%;
 
-        margin: 12.5% 25%;
 
         background-color: rgb(82, 201, 237);
         border: 1px solid black;
@@ -60,10 +60,12 @@ export const DayButton = styled.td`
 
 export const Button = styled.button`
 
-    height: 100%;
+    height: 35%;
     width: 100%;
 
     background-color: rgb(82, 201, 237);
+
+    border-bottom: 1px solid rgb(79, 175, 204);
 
     :hover{
         font-weight: bold;

@@ -20,6 +20,12 @@ const inicalState = {
         isConfigurationsMenuOpen: false,
 
         isDayEventCreatorOpened: false,
+    },
+
+    eventManager: {
+        year: new Date().getFullYear(),
+        month: null,
+        day: null
     }
 }
 
@@ -80,6 +86,43 @@ function reducer(state = inicalState, action){
                     isConfigurationsMenuOpen: action.newState,
                     isChangeYearMenuOpen: action.newState,
                     isDayEventCreatorOpened: action.newState,
+                }
+            }
+        
+        case "CHANGE_EVENT_MANAGER_YEAR":
+            return {
+                ...state,
+                eventManager: {
+                    ...state.eventManager,
+                    year: action.newYear
+                }
+            }
+
+        case "CHANGE_EVENT_MANAGER_MONTH":
+            return {
+                ...state,
+                eventManager: {
+                    ...state.eventManager,
+                    month: action.newMonth
+                }
+            }
+
+        case "CHANGE_EVENT_MANAGER_DAY":
+            return {
+                ...state,
+                eventManager: {
+                    ...state.eventManager,
+                    day: action.newDay
+                }
+            }
+        
+        case "CHANGE_EVENT_MANAGER":
+            return {
+                ...state,
+                eventManager: {
+                    year: action.newYear,
+                    month: action.newMonth,
+                    day: action.newDay
                 }
             }
     

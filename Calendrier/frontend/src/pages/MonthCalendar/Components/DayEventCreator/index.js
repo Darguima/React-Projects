@@ -7,7 +7,7 @@ import calendrierApi from "../../../../services/calendrierApi"
 
 import { connect } from "react-redux"
 
-const DayEventCreator = ({timeInfo, dispatch}) => {
+const DayEventCreator = ({timeInfo, refreshEventList, dispatch}) => {
 
   const [eventUploaded, setEventUploaded] = useState(false)
 
@@ -183,6 +183,8 @@ const DayEventCreator = ({timeInfo, dispatch}) => {
               type: "CHANGE_ANY_MENU_TO_THE_SAME_STATE",
               newState: false
             })
+
+            refreshEventList()
           }}
           >
             Exit

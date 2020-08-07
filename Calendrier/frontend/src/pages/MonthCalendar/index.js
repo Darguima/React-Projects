@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { useRouteMatch } from "react-router-dom"
+import React, { useState, useEffect } from 'react';
+import { useRouteMatch, Link } from "react-router-dom"
 
 import Header from "../Components/Header";
 
 import { MonthCalendarContainer, DayButtonsTableContainer, DayButtonsTr,  DayButton, Button } from './styles';
 
 import DayEventCreator from "./Components/DayEventCreator"
+import EventSpace from "./Components/EventSpace"
 
+import calendrierApi from "../../services/calendrierApi"
 import { connect } from "react-redux"
 
 const MonthCalendar = ({sessionInfo, dispatch}) => {
@@ -17,6 +19,40 @@ const MonthCalendar = ({sessionInfo, dispatch}) => {
     selectedMonth: monthName,
     selectedDay: null,
   })
+
+  const [userId] = useState(useRouteMatch().params.userId)
+  const [eventsOfTheMonth, setEventsOfTheMonth] = useState([])
+  
+  useEffect(() => {
+    async function fetchData() {
+    
+      try{
+        const {data} = await calendrierApi.get(`/users/${userId}`)
+        const eventsArray = []
+
+        data.events.map(item => {
+          if (item.year === sessionInfo.year && item.month === monthName){
+            eventsArray.push(item)
+          }
+
+          setEventsOfTheMonth([...eventsArray])
+
+          return item //Only to the React don't warn
+
+        })
+      }
+
+      catch(err){
+        console.error(err)
+        alert("Erro - A reiniciar pagina")
+
+        window.location.href = `/`
+      }
+    }
+
+    fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId])
 
   // Number of days on the month
   var daysOfMonth
@@ -122,7 +158,6 @@ const MonthCalendar = ({sessionInfo, dispatch}) => {
     days.push(column)
   }
 
-
   const handleDayButtonPressed = (day) => {
     setTimeInfo({...timeInfo, selectedDay: Number(day)})
 
@@ -134,6 +169,42 @@ const MonthCalendar = ({sessionInfo, dispatch}) => {
     dispatch({
       type: "CHANGE_SESSION_INFO_IS_DAY_EVENT_CREATOR_OPENED",
       newIsDayEventCreatorOpened: true
+    })
+
+  }
+
+  const refreshEventList = async () => {
+    
+    try{
+      const {data} = await calendrierApi.get(`/users/${userId}`)
+      const eventsArray = []
+
+      data.events.map(item => {
+        if (item.year === sessionInfo.year && item.month === monthName){
+          eventsArray.push(item)
+        }
+
+        setEventsOfTheMonth([...eventsArray])
+
+        return item //Only to the React don't warn
+
+      })
+    }
+
+    catch(err){
+      console.error(err)
+      alert("Erro - A reiniciar pagina")
+
+      window.location.href = `/`
+    }
+  }
+
+  const prepareDateToEventManager = (day) => {
+    dispatch({
+      type: "CHANGE_EVENT_MANAGER",
+      newYear: sessionInfo.year,
+      newMonth: monthName,
+      newDay: day,
     })
   }
 
@@ -154,6 +225,10 @@ const MonthCalendar = ({sessionInfo, dispatch}) => {
                 <Button onClick={() => handleDayButtonPressed(value)}>
                   {value}
                 </Button>
+
+                <Link to={`/eventManager/${userId}`} onClick={() => {prepareDateToEventManager(value)}}>
+                  <EventSpace day={value} eventsOfTheMonth={eventsOfTheMonth}/>
+                </Link>
               </div>
             </DayButton>
           ))}
@@ -166,6 +241,7 @@ const MonthCalendar = ({sessionInfo, dispatch}) => {
   {sessionInfo.isDayEventCreatorOpened &&
     <DayEventCreator 
       timeInfo={timeInfo}
+      refreshEventList={refreshEventList}
     />
   }
 
