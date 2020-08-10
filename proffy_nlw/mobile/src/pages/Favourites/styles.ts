@@ -9,6 +9,12 @@ const styles = StyleSheet.create({
         
     },
 
+    teacherList:{
+
+        marginTop: -40,
+
+    },
+
 })
 
 export default styles
