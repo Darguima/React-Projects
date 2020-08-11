@@ -4,6 +4,7 @@ header{
     align-items: center;
 
     width: 100vw;
+    min-width: 500px;
     height: 7vh;
     min-height: 30px;
 
@@ -11,6 +12,12 @@ header{
 
     background-color: rgb(125, 220, 255);
     /*rgb(79, 175, 204)*/
+}
+
+@media(max-width: 500px){
+    header{
+        min-width: 300px;
+    }
 }
 
 #siteName{

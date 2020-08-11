@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useRouteMatch, Link } from "react-router-dom"
 
 import calendrierApi from "../../../../../services/calendrierApi"
 
@@ -6,9 +7,12 @@ import './styles.css';
 
 import { connect } from "react-redux"
 
-const ConfigurationsMenu = ({isMenuClosing, userInfo, setUserInfo, dispatch}) => {
+const ConfigurationsMenu = ({userInfo, sessionInfo, setUserInfo, dispatch}) => {
 
-  const [nickInput, setNickInput] = useState(userInfo.nickname)
+  const [userId] = useState(useRouteMatch().params.userId)
+  const [nickInput, setNickInput] = useState()
+
+  useEffect(() => {if (userInfo) setNickInput(userInfo.nickname)}, [userInfo])
   
   async function handleNickInputChange({target: {value}}){
     setNickInput(value)
@@ -130,6 +134,18 @@ const ConfigurationsMenu = ({isMenuClosing, userInfo, setUserInfo, dispatch}) =>
     }
   }, [closeMenu, handleChangeNickButtonPressed])
 
+
+  const prepareDateToEventManager = () => {
+    closeMenu()
+    
+    dispatch({
+      type: "CHANGE_EVENT_MANAGER",
+      newYear: sessionInfo.year,
+      newMonth: null,
+      newDay: null,
+    })
+  }
+
   return (
     <div id="ConfigurationsMenuContainer">
 
@@ -165,7 +181,11 @@ const ConfigurationsMenu = ({isMenuClosing, userInfo, setUserInfo, dispatch}) =>
 
       <section>
 
-        <button id="manageEventsButton">Manage Events</button>
+        <Link to={`/eventManager/${userId}`} onClick={prepareDateToEventManager}>
+
+          <button id="manageEventsButton">Manage Events</button>
+
+        </Link> 
 
       </section>
 

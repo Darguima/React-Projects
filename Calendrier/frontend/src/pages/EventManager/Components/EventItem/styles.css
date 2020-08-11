@@ -1,0 +1,133 @@
+#eventItemContainer{
+
+    background-color: #FFF;
+
+    margin: 5%;
+    padding: 5%;
+    padding-top: 3%;
+
+    border-radius: 10px;
+    
+}
+
+
+#title p{
+    font-size: 120%;
+    font-weight: Bold;
+    text-align: center;
+}
+
+#timeGrid{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 5%;
+
+}
+
+.timeBlock {
+    border: 2px solid rgb(109, 109, 109);
+
+    text-align: center;
+
+    width: 15%;
+
+}
+
+.top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-bottom: 1px solid rgba(128, 128, 128, 0.50);
+
+    padding: 10%;
+
+    font-weight: bold;
+    font-size: 110%;
+    color: rgba(0, 0, 0, 0.65);
+
+}
+
+.bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 10%;
+
+
+}
+
+#description {
+
+    border: 2px solid rgb(109, 109, 109);
+
+    margin: 5%;
+}
+
+#description .top{
+
+    padding: 2%;
+
+}
+
+#description .bottom{
+
+    padding: 5%;
+
+} 
+
+#deleteButtonContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#deleteButton{
+    margin: 5%;
+    padding: 2% 5%;
+
+    width: 100%;
+
+    border-radius: 10px;
+    background-color: rgb(255, 54, 54);
+
+    font-size: 125%;
+}
+
+#deleteButton:hover{
+
+    background-color: rgb(255, 0, 0);
+
+    font-weight: bold;
+}
+
+@media(max-width: 500px){
+
+    #timeGrid, #description, #deleteButton{
+        width: 80%;
+        margin: 5%;
+        margin: 0 auto;
+    }
+
+    #timeGrid{
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .timeBlock{
+        width: 100%;
+    }
+
+    .timeBlock , #description, #deleteButton{
+        margin-top: 10%;
+    }
+
+    .top, .bottom {
+        padding: 4%;
+    }
+
+
+}
