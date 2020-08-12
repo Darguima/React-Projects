@@ -2,16 +2,7 @@ import React from 'react';
 
 import "./styles.css"
 
-function EventItem() {
-
-  const info = {
-    name: "Family Dinner",
-    month: "Juny",
-    day: 4,
-    year: 2020,
-    time: "21:00",
-    description: "oi"
-  }
+const  EventItem = ({ info, deleteEvent }) => {
 
   return (
 
@@ -45,14 +36,22 @@ function EventItem() {
 
       </div>
 
-      <div id="description">
+      { info.description && 
+        <div id="description">
           <p className="top">Description</p>
           <p className="bottom">{info.description}</p>
-      </div>
+        </div>
+      }
+      
 
 
       <div id="deleteButtonContainer">
-        <button id="deleteButton" >
+        <button
+          id="deleteButton"
+          onClick={() => {
+            deleteEvent(info.index)
+          }}
+        >
           Delete Event
         </button>
       </div>

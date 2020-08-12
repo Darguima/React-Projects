@@ -10,7 +10,7 @@ import { connect } from "react-redux"
 const ConfigurationsMenu = ({userInfo, sessionInfo, setUserInfo, dispatch}) => {
 
   const [userId] = useState(useRouteMatch().params.userId)
-  const [nickInput, setNickInput] = useState()
+  const [nickInput, setNickInput] = useState("")
 
   useEffect(() => {if (userInfo) setNickInput(userInfo.nickname)}, [userInfo])
   
