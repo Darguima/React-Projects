@@ -2,7 +2,7 @@ import Knex from 'knex'
 
 export async function up (knex: Knex) {
   return knex.schema.createTable('events', table => {
-    table.increments('event_id').primary()
+    table.increments('eventId').primary()
 
     table.string('name').notNullable()
     table.integer('month').notNullable()
@@ -11,11 +11,11 @@ export async function up (knex: Knex) {
     table.integer('hour').notNullable()
     table.text('description').notNullable()
     table.boolean('completed').notNullable()
-    table.boolean('auto-completed').notNullable()
+    table.boolean('autoComplete').notNullable()
 
-    table.integer('user_id')
+    table.integer('userId')
       .notNullable()
-      .references('user_id').inTable('users')
+      .references('userId').inTable('users')
       .onUpdate('CASCADE')
       .onDelete('CASCADE')
   })

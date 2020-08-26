@@ -5,7 +5,9 @@ const db = knex({
   client: 'sqlite3',
   connection: {
     filename: path.resolve(__dirname, 'calendrier.sqlite')
-  }
+  },
+
+  useNullAsDefault: true
 })
 
 export default db
