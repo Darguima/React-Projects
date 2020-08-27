@@ -1,0 +1,16 @@
+#LoginPageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+form {
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  
+}
+
