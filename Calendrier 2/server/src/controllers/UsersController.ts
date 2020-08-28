@@ -1,188 +1,228 @@
 // eslint-disable-next-line no-unused-vars
 import { Request, Response } from 'express'
+// eslint-disable-next-line no-unused-vars
+import { MiddlewareRequest } from '../middlewares/auth'
+
+import bcrypt from 'bcrypt'
+
+import jwt from 'jsonwebtoken'
+import authConfig from '../config/auth.json'
+
 import db from '../database/connection'
-import isEmail from '../utils/isEmail'
+import { validationResult } from 'express-validator'
 
 interface UserSchema {
-  userId: number,
   name: string,
-  password: string,
+  password: string | undefined,
   birthdayMonth: number,
   birthdayDay: number,
   birthdayYear: number,
   email: string,
 }
 
+interface DBUserSchema extends UserSchema {
+  userId: number,
+}
+
+interface AuthenticationUserParams {
+  email: string,
+  password: string,
+}
+
+interface changeUserDataParams {
+  confirmPassword: string | undefined,
+
+  name?: string,
+  newPassword?: string | undefined,
+  password?: string,
+  birthdayMonth?: number,
+  birthdayDay?: number,
+  birthdayYear?: number,
+  email?: string,
+}
+
+interface newUserDataSchema extends UserSchema {
+  use
+}
+
+const generateToken = (id: Number) => {
+  return jwt.sign(
+    { id },
+    authConfig.secret,
+    { expiresIn: 86400 }
+  )
+}
+
 export default class UsersController {
-  async index (request: Request, response: Response) {
+  async register (request: Request, response: Response) {
     try {
-      const params = request.body
+      const paramsError = validationResult(request)
 
-      if (!params.userId) { return response.status(400).json({ msg: 'Some parameter is missing' }) }
+      if (!paramsError.isEmpty()) {
+        return response.status(400).json({ msg: 'Param error', login: 0, error: paramsError.array() })
+      }
 
-      const userData = await db('users').select('*').where('userId', '=', params.userId)
+      const params: UserSchema = request.body
 
-      // Verify if the userId is valid
+      params.password = await bcrypt.hash(params.password, 10)
+
+      const data: UserSchema = {
+        name: params.name,
+        password: params.password,
+        birthdayMonth: params.birthdayMonth,
+        birthdayDay: params.birthdayDay,
+        birthdayYear: params.birthdayYear,
+        email: params.email
+      }
+
+      const newUserId = await db('users').insert(data)
+
+      const newUser: Array<DBUserSchema> = await db('users')
+        .select('*')
+        .where('userId', '=', newUserId)
+
+      if (newUser.length > 1) { return response.status(422).json({ msg: 'An unknown error has occurred', login: 0 }) }
+
+      newUser[0].password = undefined
+
+      return response.status(200).json({
+        msg: 'Registration complete',
+        login: 1,
+        user: newUser[0],
+        token: generateToken(newUser[0].userId)
+      })
+    } catch (err) {
+      console.warn(err)
+
+      let answer: Response
+
+      err.errno === 19 && err.code === 'SQLITE_CONSTRAINT'
+        ? answer = response.status(409).json({ ...err, msg: 'email already in use', login: 0 })
+        : answer = response.status(400).json({ ...err, msg: 'An unknown error has occurred', login: 0 })
+
+      return answer
+    }
+  }
+
+  async authentication (request: Request, response: Response) {
+    try {
+      const paramsError = validationResult(request)
+
+      if (!paramsError.isEmpty()) {
+        return response.status(400).json({ msg: 'Param error', login: 0, error: paramsError.array() })
+      }
+
+      const params: AuthenticationUserParams = request.body
+
+      const userData: Array<DBUserSchema> = await db('users')
+        .select('*')
+        .where('email', '=', params.email)
+
       if (userData.length < 1) {
-        return response.status(422).json({ msg: 'userId invalid' })
+        return response.status(422).json({ msg: 'user not found' })
       } else if (userData.length > 1) {
         return response.status(422).json({ msg: 'An unknown error has occurred' })
       }
 
-      return response.status(200).json(userData[0])
+      if (!await bcrypt.compare(params.password, userData[0].password)) {
+        return response.status(422).json({ msg: 'Incorrect password', login: 0 })
+      }
+
+      userData[0].password = undefined
+
+      return response.status(200).json(
+        {
+          msg: 'Correct password',
+          login: 1,
+          user: userData[0],
+          token: generateToken(userData[0].userId)
+        }
+      )
     } catch (err) {
       console.warn(err)
       return response.status(422).json({ ...err, msg: 'An unknown error has occurred' })
     }
   }
 
-  async create (request: Request, response: Response) {
+  async changeUserData (request: MiddlewareRequest, response: Response) {
     try {
-      const params = request.body
+      const paramsError = validationResult(request)
 
-      if (
-        !params.name ||
-        !params.password ||
-        !params.birthdayMonth ||
-        !params.birthdayDay ||
-        !params.birthdayYear ||
-        !params.email
-      ) {
-        return response.status(422).json({ msg: 'Some parameter is missing' })
+      if (!paramsError.isEmpty()) {
+        return response.status(400).json({ msg: 'Param error', error: paramsError.array() })
       }
 
-      if (
-        !(params.birthdayMonth >= 1) || !(params.birthdayMonth <= 12) ||
-        !(params.birthdayDay >= 0) || !(params.birthdayDay <= 31) ||
-        !(params.birthdayYear >= 0) ||
-        !isEmail(params.email)
-      ) {
-        return response.status(422).json({ msg: 'Some parameter is invalid' })
-      }
+      const params: changeUserDataParams = request.body
 
-      const newUserId = await db('users').insert(params)
-
-      const newUser = await db('users').select('*').where('userId', '=', newUserId)
-
-      if (newUser.length > 1) { return response.status(422).json({ msg: 'An unknown error has occurred' }) }
-
-      return response.status(200).json(newUser[0])
-    } catch (err) {
-      console.warn(err)
-
-      let answer
-
-      err.errno === 19 && err.code === 'SQLITE_CONSTRAINT'
-        ? answer = response.status(409).json({ ...err, msg: 'email already in use' })
-        : answer = response.status(400).json({ ...err, msg: 'An unknown error has occurred' })
-
-      return answer
-    }
-  }
-
-  async edit (request: Request, response: Response) {
-    try {
-      const params: UserSchema = request.body
-
-      if (!params.userId) { return response.status(400).json({ msg: 'Some parameter is missing' }) }
-
-      if (params.name === '') {
-        return response.status(422).json({ msg: 'Some parameter is invalid' })
-      }
-
-      if (params.password === '') {
-        return response.status(422).json({ msg: 'Some parameter is invalid' })
-      }
-
-      if (params.birthdayMonth) {
-        if (!(params.birthdayMonth >= 1) || !(params.birthdayMonth <= 12)) {
-          return response.status(422).json({ msg: 'Some parameter is invalid' })
-        }
-      }
-
-      if (params.birthdayMonth === 0) return response.status(422).json({ msg: 'Some parameter is invalid' })
-
-      if (params.birthdayDay) {
-        if (!(params.birthdayDay >= 0) || !(params.birthdayDay <= 31)) {
-          return response.status(422).json({ msg: 'Some parameter is invalid' })
-        }
-      }
-
-      if (params.birthdayDay === 0) return response.status(422).json({ msg: 'Some parameter is invalid' })
-
-      if (params.birthdayYear) {
-        if (!(params.birthdayYear >= 0)) {
-          return response.status(422).json({ msg: 'Some parameter is invalid' })
-        }
-      }
-
-      if (params.birthdayYear === 0) return response.status(422).json({ msg: 'Some parameter is invalid' })
-
-      if (params.email) {
-        if (!isEmail(params.email)) {
-          return response.status(422).json({ msg: 'Some parameter is invalid' })
-        }
-      }
-
-      if (params.email === '') return response.status(422).json({ msg: 'Some parameter is invalid' })
-
-      const { userId, ...newDataForUser } = params
-
-      const oldUserData = await db('users')
-        .select('name', 'password', 'birthdayMonth', 'birthdayDay', 'birthdayYear', 'email')
-        .where('userId', '=', userId)
-
-      // Verify if the userId is valid
-      if (oldUserData.length < 1) {
-        return response.status(422).json({ msg: 'userId invalid' })
-      } else if (oldUserData.length > 1) {
-        return response.status(422).json({ msg: 'An unknown error has occurred' })
-      }
-
-      await db('users')
-        .where('userId', userId)
-        .update({ ...oldUserData[0], ...newDataForUser })
-
-      return response.status(200).json({ userId, ...oldUserData[0], ...newDataForUser })
-    } catch (err) {
-      console.warn(err)
-
-      let answer
-
-      err.errno === 19 && err.code === 'SQLITE_CONSTRAINT'
-        ? answer = response.status(409).json({ ...err, msg: 'email already in use' })
-        : answer = response.status(400).json({ ...err, msg: 'An unknown error has occurred' })
-
-      return answer
-    }
-  }
-
-  async delete (request: Request, response: Response) {
-    try {
-      const params = request.body
-
-      if (!params.userId) { return response.status(400).json({ msg: 'Some parameter is missing' }) }
-
-      const oldUserData = await db('users')
+      const userData: Array<DBUserSchema> = await db('users')
         .select('*')
-        .where('userId', '=', params.userId)
+        .where('userId', '=', request.userId)
 
-      // Verify if the userId is valid
-      if (oldUserData.length < 1) {
-        return response.status(422).json({ msg: 'userId invalid' })
-      } else if (oldUserData.length > 1) {
+      if (userData.length < 1) {
+        return response.status(422).json({ msg: 'user not found' })
+      } else if (userData.length > 1) {
         return response.status(422).json({ msg: 'An unknown error has occurred' })
       }
 
+      if (!await bcrypt.compare(params.confirmPassword, userData[0].password)) {
+        return response.status(422).json({ msg: 'Incorrect password' })
+      }
+
+      params.confirmPassword = undefined
+      params.password = await bcrypt.hash(params.newPassword, 10)
+      params.newPassword = undefined
+      userData[0].userId = undefined
+      const newUserData: UserSchema = { ...userData[0], ...params }
+
+      console.log(newUserData)
+
       await db('users')
-        .where('userId', '=', params.userId)
-        .del()
+        .where('userId', '=', request.userId)
+        .update(newUserData)
 
-      await db('events')
-        .where('userId', '=', params.userId)
-        .del()
+      newUserData.password = undefined
 
-      response.status(201).send()
+      return response.status(200).json({ msg: 'Completed changes', user: { ...newUserData, userId: request.userId }, token: generateToken(request.userId) })
+    } catch (err) {
+      console.warn(err)
+
+      let answer: Response
+
+      err.errno === 19 && err.code === 'SQLITE_CONSTRAINT'
+        ? answer = response.status(409).json({ ...err, msg: 'email already in use' })
+        : answer = response.status(400).json({ ...err, msg: 'An unknown error has occurred' })
+
+      return answer
+    }
+  }
+
+  async deleteUserAccount (request: MiddlewareRequest, response: Response) {
+    try {
+      const paramsError = validationResult(request)
+
+      if (!paramsError.isEmpty()) {
+        return response.status(400).json({ msg: 'Param error', error: paramsError.array() })
+      }
+
+      const actualPassword: Array<{password: string}> = await db('users')
+        .select('password')
+        .where('userId', '=', request.userId)
+
+      if (actualPassword.length < 1) {
+        return response.status(422).json({ msg: 'user not found' })
+      } else if (actualPassword.length > 1) {
+        return response.status(422).json({ msg: 'An unknown error has occurred' })
+      }
+
+      if (!await bcrypt.compare(request.body.confirmPassword, actualPassword[0].password)) {
+        return response.status(422).json({ msg: 'Incorrect password' })
+      }
+
+      await db('users')
+        .where('userId', '=', request.userId)
+        .delete()
+
+      return response.status(200).json({ msg: 'Account Deleted' })
     } catch (err) {
       console.warn(err)
       return response.status(422).json({ ...err, msg: 'An unknown error has occurred' })
