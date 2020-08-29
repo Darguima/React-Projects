@@ -2,14 +2,217 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  height: 100vh;
+  width: 100vw;
+
+  background: var(--color-login-background);
+
+  padding: 4rem;
+
   
 }
 
-form {
+#SignupPageContainer #Left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  
+
+  height: 100%;
+  width: 50%;
+
+  border-top-left-radius: 2rem;
+  border-bottom-left-radius: 2rem;
+  
+  background: var(--color-background);
+}
+
+#SignupPageContainer #Left #Title {
+  font: 600 3.5rem Poppins;
+  text-align: center;
+}
+
+#SignupPageContainer #Left form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  
+
+  width: 100%;
+  min-height: 65%;
+}
+
+#SignupPageContainer #Left form .SignupInput{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  
+
+  width: 60%;
+
+
+  border-bottom: 0.3rem solid black;
+  padding-bottom: 0.5rem;
+}
+
+#SignupPageContainer #Left form .SignupInput .SignupInputIcon{
+  float: left;
+  
+}
+
+#SignupPageContainer #Left form .SignupInput input{
+  border: none;
+
+  font-size: 1.4rem;
+
+  text-align: center;
+
+}
+
+#SignupPageContainer #Left form #PasswordInput #EyeIcon {
+  float: right;
+}
+
+#SignupPageContainer #Left form #PasswordInput #EyeIcon:hover {
+  cursor: pointer;
+}
+
+#SignupPageContainer #Left form #RememberBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 60%;
+
+  font-size: 1.4rem;
+  
+}
+
+#SignupPageContainer #Left form #RememberBox:hover {
+  cursor: pointer;
+}
+
+#SignupPageContainer #Left form #RememberBox #SquareIcon {
+  height: 80%;
+}
+
+#SignupPageContainer #Left form #SignUpButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  
+
+  width: 60%;
+  border: none;
+
+  border-top: 0.3rem solid var(--color-primary-dark);
+  border-bottom: 0.3rem solid var(--color-primary-dark);
+
+  background: var(--color-background);
+
+  font-size: 2rem;
+  color: var(--color-primary-dark);
+
+  padding: 1rem;
+  transition: 0.3s;
+
+}
+
+#SignupPageContainer #Left form #SignUpButton:hover {
+  cursor: pointer;
+  background: var(--color-primary)
+
+}
+
+
+#SignupPageContainer #Left #CreateAnAccountButton {
+  text-decoration: none;
+  color: black;
+}
+
+#SignupPageContainer #Left #CreateAnAccountButton:hover {
+  cursor: pointer;
+}
+
+#SignupPageContainer #Right {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
+  height: 100%;
+  width: 50%;
+
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  
+  background: var(--color-primary-light);
 }
 
+#SignupPageContainer #Right #calendrierLogo {
+  height: 65%;
+}
+
+#SignupPageContainer #Right #ThirdPartySignupContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  
+
+  width: 100%;
+  height: 50%;
+}
+
+#SignupPageContainer #Right #ThirdPartySignupContainer button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  
+
+  width: 60%;
+
+  background: var(--color-primary-light);
+
+  border: 0.2rem solid var( --color-button-border);
+  border-radius: 0.2rem;
+
+  padding: 0.5rem 0;
+
+  font-size: 2rem;
+  transition: 0.3s;
+}
+
+#SignupPageContainer #Right #ThirdPartySignupContainer button:hover {
+  cursor: pointer;
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+
+
+}
+
+#SignupPageContainer #Right #ThirdPartySignupContainer button #ThirdPartySignupLogoContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  
+
+  width: 20%;
+}
+
+#SignupPageContainer #Right #ThirdPartySignupContainer button #ThirdPartySignupLogoContainer img {
+  width: 70%;
+
+}
+
+#SignupPageContainer #Right #ThirdPartySignupContainer button #ThirdPartySignupLabel {
+  width: 80%;
+}

@@ -2,15 +2,219 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  height: 100vh;
+  width: 100vw;
+
+  background: var(--color-login-background);
+
+  padding: 4rem;
+
   
 }
 
-form {
+#LoginPageContainer #Left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  width: 50%;
+
+  border-top-left-radius: 2rem;
+  border-bottom-left-radius: 2rem;
   
+  background: var(--color-primary-light);
+}
+
+#LoginPageContainer #Left #calendrierLogo {
+  height: 65%;
+}
+
+#LoginPageContainer #Left #ThirdPartyLoginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  
+
+  width: 100%;
+  height: 50%;
+}
+
+#LoginPageContainer #Left #ThirdPartyLoginContainer button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  
+
+  width: 60%;
+
+  background: var(--color-primary-light);
+
+  border: 0.2rem solid var( --color-button-border);
+  border-radius: 0.2rem;
+
+  padding: 0.5rem 0;
+
+  font-size: 2rem;
+
+  transition: 0.3s;
+}
+
+#LoginPageContainer #Left #ThirdPartyLoginContainer button:hover {
+  cursor: pointer;
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+
+}
+
+#LoginPageContainer #Left #ThirdPartyLoginContainer button #ThirdPartyLoginLogoContainer {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   
+
+  width: 20%;
+}
+
+#LoginPageContainer #Left #ThirdPartyLoginContainer button #ThirdPartyLoginLogoContainer img {
+  width: 70%;
+
+}
+
+#LoginPageContainer #Left #ThirdPartyLoginContainer button #ThirdPartyLoginLabel {
+  width: 80%;
+}
+
+
+#LoginPageContainer #Right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  
+
+  height: 100%;
+  width: 50%;
+
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  
+  background: var(--color-background);
+}
+
+#LoginPageContainer #Right #Title {
+  font: 600 3.5rem Poppins;
+  text-align: center;
+}
+
+#LoginPageContainer #Right form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  
+
+  width: 100%;
+  min-height: 50%;
+}
+
+#LoginPageContainer #Right form .LoginInput{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  
+
+  width: 60%;
+
+
+  border-bottom: 0.3rem solid black;
+  padding-bottom: 0.5rem;
+}
+
+#LoginPageContainer #Right form .LoginInput .LoginInputIcon{
+  float: left;
+  
+}
+
+#LoginPageContainer #Right form .LoginInput input{
+  border: none;
+
+  font-size: 1.4rem;
+
+  text-align: center;
+
+}
+
+#LoginPageContainer #Right form #PasswordInput #EyeIcon {
+  float: right;
+}
+
+#LoginPageContainer #Right form #PasswordInput #EyeIcon:hover {
+  cursor: pointer;
+}
+
+#LoginPageContainer #Right form #RememberBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 60%;
+
+  font-size: 1.4rem;
+  
+}
+
+#LoginPageContainer #Right form #RememberBox:hover {
+  cursor: pointer;
+}
+
+#LoginPageContainer #Right form #RememberBox #SquareIcon {
+  height: 80%;
+}
+
+#LoginPageContainer #Right form #LogInButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  
+
+  width: 60%;
+  border: none;
+
+  border-top: 0.3rem solid var(--color-primary-dark);
+  border-bottom: 0.3rem solid var(--color-primary-dark);
+
+  background: var(--color-background);
+
+  font-size: 2rem;
+  color: var(--color-primary-dark);
+
+  padding: 1rem;
+
+  transition: 0.3s;
+
+}
+
+#LoginPageContainer #Right form #LogInButton:hover {
+  cursor: pointer;
+  background: var(--color-primary);
+}
+
+
+#LoginPageContainer #Right #CreateAnAccountButton {
+  text-decoration: none;
+  color: black;
+}
+
+#LoginPageContainer #Right #CreateAnAccountButton:hover {
+  cursor: pointer;
 }
 

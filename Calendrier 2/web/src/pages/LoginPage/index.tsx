@@ -4,6 +4,11 @@ import { useHistory, Link } from 'react-router-dom'
 
 import useAuth from '../../contexts/auth'
 
+import calendrierLogo from "../../assets/images/logo500.png"
+import googleLogo from "../../assets/images/icons/google-logo.svg"
+import facebookLogo from "../../assets/images/icons/facebook-logo.svg"
+import { User, Lock, Eye, Square, LogIn } from "react-feather"
+
 import './styles.css'
 
 const LoginPage: React.FC = () => {
@@ -13,7 +18,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const hadleFormSubmit = async (e: FormEvent) => {
+  const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     await logIn(email, password)
@@ -24,17 +29,57 @@ const LoginPage: React.FC = () => {
   return (
     <div id="LoginPageContainer">
 
-      <form onSubmit={e => { hadleFormSubmit(e) }}>
-        <label>E-mail</label>
-        <input value={email} onChange={e => setEmail(e.target.value)} type="email"></input>
+      <div id="Left">
+        <img id="calendrierLogo" src={calendrierLogo} alt="logo" />
+        <div id="ThirdPartyLoginContainer">
 
-        <label>Password</label>
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)}></input>
+          <button id="GoogleLoginButton" type="button">
+            <div id="ThirdPartyLoginLogoContainer">
+              <img src={googleLogo} alt="google logo" />
+            </div>
+            <p id="ThirdPartyLoginLabel">Google</p>
+          </button>
 
-        <button type="submit">Submit</button>
-      </form>
+          <button id="FacebookLoginButton" type="button">
+            <div id="ThirdPartyLoginLogoContainer">
+              <img src={facebookLogo} alt="facebook logo" />
+            </div>
+            <p id="ThirdPartyLoginLabel">Facebook</p>
+          </button>
 
-      <Link to="/signup">Sign Up</Link>
+        </div>
+      </div>
+      <div id="Right">
+
+        <p id="Title">Login</p>
+
+        <form onSubmit={e => { handleFormSubmit(e) }}>
+
+          <div id="EmailInput" className="LoginInput">
+            <User className="LoginInputIcon" strokeWidth="3" />
+            <input value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="e-mail"></input>
+          </div>
+
+          <div id="PasswordInput" className="LoginInput">
+            <Lock className="LoginInputIcon"  strokeWidth="3"/>
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="password"></input>
+            <Eye id="EyeIcon"  strokeWidth="3" />
+          </div>
+
+          <div id="RememberBox">
+            <Square id="SquareIcon" /> Remeber password
+          </div>
+
+          <button id="LogInButton" type="submit">
+            <LogIn id="LogInButtonIcon" />
+            <p id="SubmitButtonLabel">Login</p>
+          </button>
+        </form>
+
+        <Link id="CreateAnAccountButton" to="/signup">Create an Account</Link>
+      </div>
+
+      {/*Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>*/}
 
     </div>
   )
