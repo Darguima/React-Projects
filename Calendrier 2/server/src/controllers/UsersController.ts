@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 // eslint-disable-next-line no-unused-vars
 import { MiddlewareRequest } from '../middlewares/auth'
 
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 import jwt from 'jsonwebtoken'
 import authConfig from '../config/auth.json'
@@ -41,10 +41,6 @@ interface changeUserDataParams {
   email?: string,
 }
 
-interface newUserDataSchema extends UserSchema {
-  use
-}
-
 const generateToken = (id: Number) => {
   return jwt.sign(
     { id },
@@ -59,7 +55,7 @@ export default class UsersController {
       const paramsError = validationResult(request)
 
       if (!paramsError.isEmpty()) {
-        return response.status(400).json({ msg: 'Param error', login: 0, error: paramsError.array() })
+        return response.status(400).json({ msg: 'param error', login: 0, error: paramsError.array() })
       }
 
       const params: UserSchema = request.body
@@ -81,12 +77,16 @@ export default class UsersController {
         .select('*')
         .where('userId', '=', newUserId)
 
-      if (newUser.length > 1) { return response.status(422).json({ msg: 'An unknown error has occurred', login: 0 }) }
+      if (newUser.length < 1) {
+        return response.status(422).json({ msg: 'db error -> response.length < 1', login: 0 })
+      } else if (newUser.length > 1) {
+        return response.status(422).json({ msg: 'db error -> response.length > 1', login: 0 })
+      }
 
       newUser[0].password = undefined
 
       return response.status(200).json({
-        msg: 'Registration complete',
+        msg: 'success',
         login: 1,
         user: newUser[0],
         token: generateToken(newUser[0].userId)
@@ -98,7 +98,7 @@ export default class UsersController {
 
       err.errno === 19 && err.code === 'SQLITE_CONSTRAINT'
         ? answer = response.status(409).json({ ...err, msg: 'email already in use', login: 0 })
-        : answer = response.status(400).json({ ...err, msg: 'An unknown error has occurred', login: 0 })
+        : answer = response.status(400).json({ ...err, msg: 'unknown error', login: 0 })
 
       return answer
     }
@@ -109,7 +109,7 @@ export default class UsersController {
       const paramsError = validationResult(request)
 
       if (!paramsError.isEmpty()) {
-        return response.status(400).json({ msg: 'Param error', login: 0, error: paramsError.array() })
+        return response.status(400).json({ msg: 'param error', login: 0, error: paramsError.array() })
       }
 
       const params: AuthenticationUserParams = request.body
@@ -119,20 +119,20 @@ export default class UsersController {
         .where('email', '=', params.email)
 
       if (userData.length < 1) {
-        return response.status(422).json({ msg: 'user not found' })
+        return response.status(422).json({ msg: 'db error -> response.length < 1', login: 0 })
       } else if (userData.length > 1) {
-        return response.status(422).json({ msg: 'An unknown error has occurred' })
+        return response.status(422).json({ msg: 'db error -> response.length > 1', login: 0 })
       }
 
       if (!await bcrypt.compare(params.password, userData[0].password)) {
-        return response.status(422).json({ msg: 'Incorrect password', login: 0 })
+        return response.status(422).json({ msg: 'incorrect password', login: 0 })
       }
 
       userData[0].password = undefined
 
       return response.status(200).json(
         {
-          msg: 'Correct password',
+          msg: 'success',
           login: 1,
           user: userData[0],
           token: generateToken(userData[0].userId)
@@ -140,7 +140,7 @@ export default class UsersController {
       )
     } catch (err) {
       console.warn(err)
-      return response.status(422).json({ ...err, msg: 'An unknown error has occurred' })
+      return response.status(400).json({ ...err, msg: 'unknown error', login: 0 })
     }
   }
 
@@ -149,7 +149,7 @@ export default class UsersController {
       const paramsError = validationResult(request)
 
       if (!paramsError.isEmpty()) {
-        return response.status(400).json({ msg: 'Param error', error: paramsError.array() })
+        return response.status(400).json({ msg: 'param error', login: 0, error: paramsError.array() })
       }
 
       const params: changeUserDataParams = request.body
@@ -159,13 +159,13 @@ export default class UsersController {
         .where('userId', '=', request.userId)
 
       if (userData.length < 1) {
-        return response.status(422).json({ msg: 'user not found' })
+        return response.status(422).json({ msg: 'db error -> response.length < 1', login: 0 })
       } else if (userData.length > 1) {
-        return response.status(422).json({ msg: 'An unknown error has occurred' })
+        return response.status(422).json({ msg: 'db error -> response.length > 1', login: 0 })
       }
 
       if (!await bcrypt.compare(params.confirmPassword, userData[0].password)) {
-        return response.status(422).json({ msg: 'Incorrect password' })
+        return response.status(422).json({ msg: 'incorrect password', login: 0 })
       }
 
       params.confirmPassword = undefined
@@ -174,23 +174,21 @@ export default class UsersController {
       userData[0].userId = undefined
       const newUserData: UserSchema = { ...userData[0], ...params }
 
-      console.log(newUserData)
-
       await db('users')
         .where('userId', '=', request.userId)
         .update(newUserData)
 
       newUserData.password = undefined
 
-      return response.status(200).json({ msg: 'Completed changes', user: { ...newUserData, userId: request.userId }, token: generateToken(request.userId) })
+      return response.status(200).json({ msg: 'success', login: 1, user: { ...newUserData, userId: request.userId }, token: generateToken(request.userId) })
     } catch (err) {
       console.warn(err)
 
       let answer: Response
 
       err.errno === 19 && err.code === 'SQLITE_CONSTRAINT'
-        ? answer = response.status(409).json({ ...err, msg: 'email already in use' })
-        : answer = response.status(400).json({ ...err, msg: 'An unknown error has occurred' })
+        ? answer = response.status(409).json({ ...err, msg: 'email already in use', login: 0 })
+        : answer = response.status(400).json({ ...err, msg: 'unknown error', login: 0 })
 
       return answer
     }
@@ -201,7 +199,7 @@ export default class UsersController {
       const paramsError = validationResult(request)
 
       if (!paramsError.isEmpty()) {
-        return response.status(400).json({ msg: 'Param error', error: paramsError.array() })
+        return response.status(400).json({ msg: 'param error', login: 0, error: paramsError.array() })
       }
 
       const actualPassword: Array<{password: string}> = await db('users')
@@ -209,23 +207,23 @@ export default class UsersController {
         .where('userId', '=', request.userId)
 
       if (actualPassword.length < 1) {
-        return response.status(422).json({ msg: 'user not found' })
+        return response.status(422).json({ msg: 'db error -> response.length < 1', login: 0 })
       } else if (actualPassword.length > 1) {
-        return response.status(422).json({ msg: 'An unknown error has occurred' })
+        return response.status(422).json({ msg: 'db error -> response.length > 1', login: 0 })
       }
 
       if (!await bcrypt.compare(request.body.confirmPassword, actualPassword[0].password)) {
-        return response.status(422).json({ msg: 'Incorrect password' })
+        return response.status(422).json({ msg: 'incorrect password', login: 0 })
       }
 
       await db('users')
         .where('userId', '=', request.userId)
         .delete()
 
-      return response.status(200).json({ msg: 'Account Deleted' })
+      return response.status(200).json({ msg: 'success' })
     } catch (err) {
       console.warn(err)
-      return response.status(422).json({ ...err, msg: 'An unknown error has occurred' })
+      return response.status(400).json({ ...err, msg: 'unknown error', login: 0 })
     }
   }
 }
