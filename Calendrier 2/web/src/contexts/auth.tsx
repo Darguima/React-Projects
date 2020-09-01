@@ -1,23 +1,57 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
-import { useHistory } from 'react-router-dom'
 
-import calendrierApi, { calendrierApiFake } from '../services/api'
+import calendrierApi from '../services/api'
 
-interface User {
-  userId: number,
+interface UserSchema {
   name: string,
+  password?: string | undefined,
   birthdayMonth: number,
   birthdayDay: number,
-  birthdayYear: number
+  birthdayYear: number,
   email: string,
+}
+
+interface DBUserSchema extends UserSchema {
+  userId: number,
+}
+
+interface CalendrierApiResponse {
+
+  msg: string,
+  login: number,
+
+  user?: DBUserSchema,
+  token?: string,
+
+  error?: [ {
+    value?: string,
+    msg: string,
+    param: string,
+    location: string
+  }],
+
+  errno?: number,
+  code?: string,
+}
+
+interface AxiosResponse {
+  data: CalendrierApiResponse
 }
 
 interface AuthContextData {
   signed: boolean,
-  user: User | null,
+  user: DBUserSchema | null,
   loading: boolean,
 
-  logIn(email: string, password: string): Promise<void>,
+  logIn(email: string, password: string): Promise<CalendrierApiResponse>,
+  signUp(
+    name: string,
+    password: string,
+    birthdayMonth: number,
+    birthdayDay: number,
+    birthdayYear: number,
+    email: string,
+  ): Promise<CalendrierApiResponse>,
   logOut(): Promise<void>,
 }
 
@@ -25,31 +59,85 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 // eslint-disable-next-line react/prop-types
 export const AuthProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<DBUserSchema | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const userStoraged = localStorage.getItem('@CalAuth:user')
     const tokenStoraged = localStorage.getItem('@CalAuth:token')
 
-    calendrierApi.defaults.headers.Authorization = `Bearer ${tokenStoraged}`
-
     if (userStoraged && tokenStoraged) {
       setUser(JSON.parse(userStoraged))
+
+      calendrierApi.defaults.headers.Authorization = `Bearer ${tokenStoraged}`
     }
 
     setLoading(false)
   }, [])
 
   async function logIn (email: string, password: string) {
-    const response = await calendrierApiFake(email, password)
+    var response: CalendrierApiResponse
 
-    setUser(response.user)
+    try {
+      response = (await calendrierApi.post('/authentication', { email, password })).data
+    } catch (err) {
+      if (err.response) {
+        if (err.response.data) {
+          response = err.response.data
+        } else {
+          return { ...err, msg: 'unknown error', login: 0 }
+        }
+      } else {
+        return { ...err, msg: 'unknown error', login: 0 }
+      }
+    }
 
-    calendrierApi.defaults.headers.Authorization = `Bearer ${response.token}`
+    if (response.user && response.token) {
+      setUser(response.user)
 
-    localStorage.setItem('@CalAuth:user', JSON.stringify(response.user))
-    localStorage.setItem('@CalAuth:token', response.token)
+      calendrierApi.defaults.headers.Authorization = `Bearer ${response.token}`
+
+      localStorage.setItem('@CalAuth:user', JSON.stringify(response.user))
+      localStorage.setItem('@CalAuth:token', response.token)
+    }
+
+    return response
+  }
+
+  async function signUp (name: string, password: string, birthdayMonth: number, birthdayDay: number, birthdayYear: number, email: string) {
+    var response: CalendrierApiResponse
+
+    try {
+      response = (await calendrierApi.post('/register', {
+        name,
+        password,
+        birthdayMonth,
+        birthdayDay,
+        birthdayYear,
+        email
+      })).data
+    } catch (err) {
+      if (err.response) {
+        if (err.response.data) {
+          response = err.response.data
+        } else {
+          return { ...err, msg: 'unknown error', login: 0 }
+        }
+      } else {
+        return { ...err, msg: 'unknown error', login: 0 }
+      }
+    }
+
+    if (response.user && response.token) {
+      setUser(response.user)
+
+      calendrierApi.defaults.headers.Authorization = `Bearer ${response.token}`
+
+      localStorage.setItem('@CalAuth:user', JSON.stringify(response.user))
+      localStorage.setItem('@CalAuth:token', response.token)
+    }
+
+    return response
   }
 
   async function logOut () {
@@ -59,7 +147,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ signed: !!user, user, loading, logIn, logOut }}>
+    <AuthContext.Provider value={{ signed: !!user, user, loading, logIn, signUp, logOut }}>
       {children}
     </AuthContext.Provider>
   )

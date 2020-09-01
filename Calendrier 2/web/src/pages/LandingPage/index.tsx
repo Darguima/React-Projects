@@ -16,7 +16,7 @@ const LandingPage:React.FC<LandingPageProps> = () => {
   const handleLogOutButtonPressed = async () => {
     await logOut()
 
-    history.push('/')
+    history.push('/login')
   }
 
   return (
