@@ -1,95 +1,108 @@
+
 #LoginPageContainer {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-
-  height: 100vh;
-  width: 100vw;
+  
 
   background: var(--color-login-background);
 
-  padding: 4rem;
+  width: 100vw;
+  height: 100vh;
+  min-height: 400px;
 
-  
+  padding: 4rem;
 }
 
 #LoginPageContainer #Left {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 
-  height: 100%;
-  width: 50%;
-
-  border-top-left-radius: 2rem;
-  border-bottom-left-radius: 2rem;
-  
   background: var(--color-primary-light);
+
+  width: 50%;
+  height: 100%;
+  min-height: 400px;
+
+  border-top-left-radius: 3rem;
+  border-bottom-left-radius: 3rem;
+
+  padding: 2%;
 }
 
 #LoginPageContainer #Left #calendrierLogo {
-  height: 65%;
+  height: 60%;
 }
 
-#LoginPageContainer #Left #ThirdPartyLoginContainer {
+#LoginPageContainer #Left .ThirdPartyContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  
 
+  height: 40%;
   width: 100%;
-  height: 50%;
 }
 
-#LoginPageContainer #Left #ThirdPartyLoginContainer button {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  
-
-  width: 60%;
-
-  background: var(--color-primary-light);
-
-  border: 0.2rem solid var( --color-button-border);
-  border-radius: 0.2rem;
-
-  padding: 0.5rem 0;
-
-  font-size: 2rem;
-
-  transition: 0.3s;
-}
-
-#LoginPageContainer #Left #ThirdPartyLoginContainer button:hover {
-  cursor: pointer;
-  background: var(--color-primary-dark);
-  border-color: var(--color-primary-dark);
-
-}
-
-#LoginPageContainer #Left #ThirdPartyLoginContainer button #ThirdPartyLoginLogoContainer {
+#LoginPageContainer #Left .ThirdPartyContainer button {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  
 
-  width: 20%;
+  width: 75%;
+  height: 25%;
+
+  background: var(--color-primary-light);
+
+  border: 0.2rem solid var(--color-primary);
+  border-radius: 0.5rem;
+
+  transition: 0.3s;
 }
 
-#LoginPageContainer #Left #ThirdPartyLoginContainer button #ThirdPartyLoginLogoContainer img {
-  width: 70%;
+#LoginPageContainer #Left .ThirdPartyContainer button:hover {
+  background: var(--color-primary-dark);
+  border: 0.2rem solid var(--color-primary-dark);
+  color: var(--color-primary-light);
+
+  cursor: pointer;
 
 }
 
-#LoginPageContainer #Left #ThirdPartyLoginContainer button #ThirdPartyLoginLabel {
-  width: 80%;
+#LoginPageContainer #Left .ThirdPartyContainer button p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  width: 75%;
+
+  font: 500 3rem Ubuntu;
 }
 
+#LoginPageContainer #Left .ThirdPartyContainer button .ThirdPartyLogoContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  width: 25%;
+  padding: 2%;
+
+}
+
+#LoginPageContainer #Left .ThirdPartyContainer button .ThirdPartyLogoContainer img {
+  height: 100%;
+}
+
+#LoginPageContainer #Left #LoginInstructions {
+  display: none;
+}
 
 #LoginPageContainer #Right {
   display: flex;
@@ -98,17 +111,32 @@
   justify-content: space-evenly;
   
 
-  height: 100%;
-  width: 50%;
-
-  border-top-right-radius: 2rem;
-  border-bottom-right-radius: 2rem;
-  
   background: var(--color-background);
+
+  width: 50%;
+  height: 100%;
+  min-height: 400px;
+
+  border-top-right-radius: 3rem;
+  border-bottom-right-radius: 3rem;
 }
 
-#LoginPageContainer #Right #Title {
-  font: 600 3.5rem Poppins;
+#LoginPageContainer #Right #TitleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#LoginPageContainer #Right #TitleContainer p {
+  font: 600 5rem Poppins;
   text-align: center;
 }
 
@@ -118,45 +146,48 @@
   align-items: center;
   justify-content: space-evenly;
   
-
-  width: 100%;
-  min-height: 50%;
+  height: 60%;
+  width: 75%;
 }
 
-#LoginPageContainer #Right form .LoginInput{
+#LoginPageContainer #Right form .LoginInput {
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
-  
+  align-items: center;
+  justify-content: flex-start;
 
-  width: 60%;
+  width: 100%;
 
+  padding-bottom: 0.2rem;
 
-  border-bottom: 0.3rem solid black;
-  padding-bottom: 0.5rem;
+  border-bottom: 0.2rem solid #000;
 }
 
-#LoginPageContainer #Right form .LoginInput .LoginInputIcon{
-  float: left;
-  
+#LoginPageContainer #Right form .LoginInput .LoginInputIcon {
+  width: 10%;
+
+  height: 3rem;
 }
 
-#LoginPageContainer #Right form .LoginInput input{
-  border: none;
+#LoginPageContainer #Right form .LoginInput input {
+  width: 80%;
 
-  font-size: 1.4rem;
+  font-size: 1.8rem;
 
+  border: 0;
+}
+
+#LoginPageContainer #Right form .LoginInput #PasswordViewIcon:hover {
+  cursor: pointer;
+}
+
+#LoginPageContainer #Right form #ErrorMessage {
+  color: var(--color-error-message);
+
+  width: 100%;
   text-align: center;
 
-}
-
-#LoginPageContainer #Right form #PasswordInput #EyeIcon {
-  float: right;
-}
-
-#LoginPageContainer #Right form #PasswordInput #EyeIcon:hover {
-  cursor: pointer;
+  font: 400 1.6rem Ubuntu;
 }
 
 #LoginPageContainer #Right form #RememberBox {
@@ -164,57 +195,406 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-
-  width: 60%;
-
-  font-size: 1.4rem;
   
-}
 
-#LoginPageContainer #Right form #RememberBox:hover {
-  cursor: pointer;
+  width: 100%;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #LoginPageContainer #Right form #RememberBox #SquareIcon {
-  height: 80%;
+  margin-right: 0.3rem;
+
+  cursor: pointer;
+}
+
+
+#LoginPageContainer #Right form #RememberBox p {
+  cursor: pointer;
 }
 
 #LoginPageContainer #Right form #LogInButton {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
   
-
-  width: 60%;
-  border: none;
-
-  border-top: 0.3rem solid var(--color-primary-dark);
-  border-bottom: 0.3rem solid var(--color-primary-dark);
+  width: 100%;
+  padding: 4% 0;
 
   background: var(--color-background);
-
-  font-size: 2rem;
   color: var(--color-primary-dark);
 
-  padding: 1rem;
+  border: 0;
+  border-top: 0.2rem solid var(--color-primary-dark);
+  border-bottom: 0.2rem solid var(--color-primary-dark);
 
   transition: 0.3s;
-
 }
 
 #LoginPageContainer #Right form #LogInButton:hover {
+  background: var(--color-primary-dark);
+  color: var(--color-primary-light);
+
+  border-radius: 0.5rem;
+
   cursor: pointer;
-  background: var(--color-primary);
 }
 
+#LoginPageContainer #Right form #LogInButton #LogInButtonIcon {
+  height: 3rem;
+}
 
-#LoginPageContainer #Right #CreateAnAccountButton {
+#LoginPageContainer #Right form #LogInButton p {
+  width: 100%;
+
+  font: 700 3rem Ubuntu;
+}
+
+#LoginPageContainer #Right form .ThirdPartyButton {
+  display: none;
+}
+
+#LoginPageContainer #Right #CreateAnAccountButtonContainer a {
+  font: 400 1.4rem Ubuntu;
   text-decoration: none;
   color: black;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-#LoginPageContainer #Right #CreateAnAccountButton:hover {
-  cursor: pointer;
+@media (max-height: 500px){
+  #LoginPageContainer #Left .ThirdPartyContainer button p {
+    font: 400 2.5rem Ubuntu;
+  }
+  
+  #LoginPageContainer #Left .ThirdPartyContainer button .ThirdPartyLogoContainer {
+    height: 100%;
+    width: 25%;
+    padding: 1%;
+  
+  }
+
+  #LoginPageContainer #Right #TitleContainer p {
+    font-size: 3rem;
+  }
+
+  #LoginPageContainer #Right form {
+    width: 60%;
+  }
+
+  #LoginPageContainer #Right form .LoginInput input {
+    width: 80%;
+    margin: 0 4%;
+
+    font-size: 1.6rem;
+  }
+
+  #LoginPageContainer #Right form .LoginInput .LoginInputIcon {
+    width: 6%;
+  
+    height: 3rem;
+  }
+
+  #LoginPageContainer #Right form #ErrorMessage {
+    font-size: 1.2rem;
+  }
+
+  #LoginPageContainer #Right form #RememberBox #SquareIcon {
+    width: 5%;
+  }
+
+  #LoginPageContainer #Right form #RememberBox p {
+    font-size: 1.2rem;
+  }
+
+  #LoginPageContainer #Right form #LogInButton {
+    height: 15%;
+  }
+
+  #LoginPageContainer #Right form #LogInButton p {
+    font-size: 2.5rem;
+  }
+
+  #LoginPageContainer #Right #CreateAnAccountButtonContainer a {
+    font-size: 1.4rem;
+  }
 }
 
+@media (max-width: 1000px) and (min-width: 700px){
+  #LoginPageContainer #Left #calendrierLogo {
+    height: 50%;
+  }
+
+  #LoginPageContainer #Left .ThirdPartyContainer button p {
+    font-size: 2.5rem;
+  }
+
+  #LoginPageContainer #Left .ThirdPartyContainer button .ThirdPartyLogoContainer {
+    padding: 1rem;
+    margin: 0 1%;
+  }
+
+  #LoginPageContainer #Right #TitleContainer p {
+    font-size: 4rem;
+  }
+
+  #LoginPageContainer #Right form .LoginInput input {
+    width: 84%;
+    margin: 0 1%;
+  }
+
+  #LoginPageContainer #Right form .LoginInput .LoginInputIcon {
+    width: 7%;
+  
+    height: 3rem;
+  }
+
+  #LoginPageContainer #Right form #LogInButton p {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 800px) and (min-width: 700px){
+  #LoginPageContainer #Left #calendrierLogo {
+    height: 40%;
+  }
+
+  #LoginPageContainer #Left .ThirdPartyContainer button p {
+    font: 400 2.5rem Ubuntu;
+  }
+
+  #LoginPageContainer #Left .ThirdPartyContainer button .ThirdPartyLogoContainer {
+    padding: 1rem;
+    margin: 0 1%;
+  }
+
+  #LoginPageContainer #Right #TitleContainer p {
+    font-size: 4rem;
+  }
+
+  #LoginPageContainer #Right form .LoginInput input {
+    width: 82%;
+    margin: 0 2%;
+
+    font-size: 1.6rem;
+  }
+
+  #LoginPageContainer #Right form .LoginInput .LoginInputIcon {
+    width: 7%;
+  
+    height: 3rem;
+  }
+
+  #LoginPageContainer #Right form #ErrorMessage {
+    font-size: 1.4rem;
+  }
+
+  #LoginPageContainer #Right form #RememberBox #SquareIcon {
+    width: 7%;
+
+    margin-right: 0.3rem;
+  }
+
+  #LoginPageContainer #Right form #RememberBox p {
+    font-size: 1.4rem;
+  }
+
+  #LoginPageContainer #Right form #LogInButton #LogInButtonIcon {
+    height: 2.5rem;
+  }
+
+  #LoginPageContainer #Right form #LogInButton p {
+    font: 400 2.5rem Ubuntu;
+  }
+}
+
+@media (max-width: 700px){
+  #LoginPageContainer {
+    flex-direction: column;
+
+    height: 200vh;
+
+    padding: 0;
+  }
+  
+  #LoginPageContainer #Left {
+    justify-content: space-evenly;
+  
+    width: 90%;
+    height: 100vh;
+  
+    border-top-left-radius: 0rem;
+    border-bottom-left-radius: 0rem;
+  
+    padding: 0;
+  }
+  
+  #LoginPageContainer #Left #calendrierLogo {
+    height: 60%;
+  }
+  
+  #LoginPageContainer #Left .ThirdPartyContainer {
+    display: none;
+  }
+
+  #LoginPageContainer #Left #LoginInstructions {
+    display: block;
+
+    font: 400 2rem Ubuntu;
+  }
+  
+  #LoginPageContainer #Right {
+    width: 90%;
+    height: 100vh;
+
+    padding: 3% 0;
+  
+    border-top-right-radius: 0rem;
+    border-bottom-right-radius: 0rem;
+  }
+  
+  #LoginPageContainer #Right form {
+    height: 80%;
+  }
+  
+  #LoginPageContainer #Right form #RememberBox p {
+    font-size: 1.6rem;
+  }
+
+  #LoginPageContainer #Right form #LogInButton {
+    height: 10%;
+  }
+
+ #LoginPageContainer #Right form .ThirdPartyButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  
+    height: 10%;
+    width: 100%;
+  
+    background: var(--color-primary-light);
+  
+    border: 0.2rem solid var(--color-primary);
+    border-radius: 0.5rem;
+  
+    transition: 0.3s;
+  }
+  
+ #LoginPageContainer #Right form .ThirdPartyButton:hover {
+    background: var(--color-primary-dark);
+    border: 0.2rem solid var(--color-primary-dark);
+    color: var(--color-primary-light);
+  
+    cursor: pointer;
+  
+  }
+  
+ #LoginPageContainer #Right form .ThirdPartyButton p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    height: 100%;
+    width: 90%;
+  
+    font: 500 3rem Ubuntu;
+  }
+  
+ #LoginPageContainer #Right form .ThirdPartyButton .ThirdPartyLogoContainer {    
+    height: 100%;
+    width: 10%;
+    padding: 1rem;
+    padding-left: 3rem;
+  }
+  
+ #LoginPageContainer #Right form .ThirdPartyButton .ThirdPartyLogoContainer img {
+    height: 100%;
+  }
+  
+  
+  #LoginPageContainer #Right #CreateAnAccountButtonContainer a {
+    font: 400 1.6rem Ubuntu;
+  }
+}
+
+@media (max-width: 500px){
+  #LoginPageContainer #Left #calendrierLogo {
+    height: 50%;
+  }
+
+  #LoginPageContainer #Left #LoginInstructions {
+    font-size: 1.8rem;
+  }
+
+  #LoginPageContainer #Right #TitleContainer p {
+    font-size: 4.5rem;
+  }
+
+  #LoginPageContainer #Right form .LoginInput input {
+    width: 78%;
+    margin: 0 4%;
+
+    font-size: 1.5rem;
+  }
+
+  #LoginPageContainer #Right form .LoginInput .LoginInputIcon {
+    width: 7%;
+  }
+
+  #LoginPageContainer #Right form #ErrorMessage {
+    font-size: 1.5rem;
+  }
+
+  #LoginPageContainer #Right form #RememberBox #SquareIcon {
+    height: 75%;
+    margin-right: 0.1rem;
+  }
+
+  #LoginPageContainer #Right form #RememberBox p {
+    font-size: 1.5rem;
+  }
+
+  #LoginPageContainer #Right form #LogInButton #LogInButtonIcon {
+    height: 2.5rem;
+  }
+
+  #LoginPageContainer #Right form #LogInButton {
+    height: 8.5%;
+  }
+
+  #LoginPageContainer #Right form #LogInButton p {
+    font: 500 2.5rem Ubuntu;
+  }
+
+  #LoginPageContainer #Right form .ThirdPartyButton {
+    height: 8.5%;
+  }
+
+  #LoginPageContainer #Right form .ThirdPartyButton p {
+    width: 95%;
+  
+    font: 500 2.5rem Ubuntu;
+  }
+  
+  #LoginPageContainer #Right form .ThirdPartyButton .ThirdPartyLogoContainer {    
+    height: 105%;
+    width: 5%;
+  }
+
+  #LoginPageContainer #Right #CreateAnAccountButtonContainer a {
+    font-size: 1.5rem;
+  }
+}

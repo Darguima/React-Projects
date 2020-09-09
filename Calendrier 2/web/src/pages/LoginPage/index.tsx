@@ -7,7 +7,7 @@ import useAuth from '../../contexts/auth'
 import calendrierLogo from '../../assets/images/logo500.png'
 import googleLogo from '../../assets/images/icons/google-logo.svg'
 import facebookLogo from '../../assets/images/icons/facebook-logo.svg'
-import { User, Lock, Eye, Square, LogIn } from 'react-feather'
+import { User, Lock, Eye, EyeOff, Square, CheckSquare, LogIn } from 'react-feather'
 
 import './styles.css'
 
@@ -18,27 +18,29 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const [seePassword, setSeePassword] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [rememberPassword, setRememberPassword] = useState(false)
+
   const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     const loginStatus = await logIn(email, password)
 
-    console.log(loginStatus)
-
     if (loginStatus.login === 1) {
       history.push('/landing')
     } else if (loginStatus.msg === 'param error') {
-      alert('param invalid')
+      setErrorMessage('Invalid value')
     } else if (loginStatus.msg === 'db error -> response.length < 1') {
-      alert('no user')
+      setErrorMessage('User not found. Try to create an account!')
     } else if (loginStatus.msg === 'db error -> response.length > 1') {
-      alert('more that one user')
+      setErrorMessage('Unknown server error. Try again later!')
     } else if (loginStatus.msg === 'incorrect password') {
-      alert('incorrect password')
+      setErrorMessage('Incorrect password. Try again!')
     } else if (loginStatus.msg === 'unknown error') {
-      alert('unknown error')
+      setErrorMessage('Unknown error. Try again later!')
     } else {
-      alert('very unknown error')
+      setErrorMessage('Something went wrong. Try again later!')
     }
   }
 
@@ -47,55 +49,143 @@ const LoginPage: React.FC = () => {
 
       <div id="Left">
         <img id="calendrierLogo" src={calendrierLogo} alt="logo" />
-        <div id="ThirdPartyLoginContainer">
+        <div className="ThirdPartyContainer" id="LeftThirdPartyContainer">
 
-          <button id="GoogleLoginButton" type="button">
-            <div id="ThirdPartyLoginLogoContainer">
+          <button type="button">
+            <div className="ThirdPartyLogoContainer">
               <img src={googleLogo} alt="google logo" />
             </div>
-            <p id="ThirdPartyLoginLabel">Google</p>
+            <p>Google</p>
           </button>
 
-          <button id="FacebookLoginButton" type="button">
-            <div id="ThirdPartyLoginLogoContainer">
+          <button type="button">
+            <div className="ThirdPartyLogoContainer">
               <img src={facebookLogo} alt="facebook logo" />
             </div>
-            <p id="ThirdPartyLoginLabel">Facebook</p>
+            <p>Facebook</p>
           </button>
 
         </div>
+
+        <p id="LoginInstructions">swipe up to login</p>
+
       </div>
       <div id="Right">
 
-        <p id="Title">Login</p>
+        <div id="TitleContainer">
+          <p>Login</p>
+        </div>
 
         <form onSubmit={e => { handleFormSubmit(e) }}>
 
           <div id="EmailInput" className="LoginInput">
-            <User className="LoginInputIcon" strokeWidth="3" />
-            <input value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="e-mail"></input>
+            <User className="LoginInputIcon" size={60} />
+            <input
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              type="email"
+              placeholder="e-mail"
+            />
           </div>
 
           <div id="PasswordInput" className="LoginInput">
-            <Lock className="LoginInputIcon" strokeWidth="3"/>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="password"></input>
-            <Eye id="EyeIcon" strokeWidth="3" />
+            <Lock className="LoginInputIcon" size={60}/>
+            <input
+              type={ seePassword ? 'text' : 'password'}
+              minLength={8}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="password"
+            />
+
+            {
+              !seePassword &&
+              <Eye
+                className="LoginInputIcon"
+                id="PasswordViewIcon"
+                size={60}
+                onClick={() => setSeePassword(!seePassword) }
+              />
+            }
+
+            {
+              seePassword &&
+              <EyeOff
+                className="LoginInputIcon"
+                id="PasswordViewIcon"
+                size={60}
+                onClick={() => setSeePassword(!seePassword) }
+              />
+            }
           </div>
 
-          <div id="RememberBox">
-            <Square id="SquareIcon" /> Remeber password
+          {
+            errorMessage !== '' &&
+            <div id="ErrorMessage">
+              {errorMessage}
+            </div>
+          }
+
+          <div id="RememberBox" >
+            {
+              !rememberPassword &&
+              <>
+                <Square
+                  id="SquareIcon"
+                  onClick={() => setRememberPassword(!rememberPassword) }
+                />
+                <p
+                  onClick={() => setRememberPassword(!rememberPassword) }
+                >
+                  Remember password
+                </p>
+              </>
+            }
+
+            {
+              rememberPassword &&
+              <>
+                <CheckSquare
+                  id="SquareIcon"
+                  onClick={() => setRememberPassword(!rememberPassword) }
+                />
+                <p
+                  onClick={() => setRememberPassword(!rememberPassword) }
+                >
+                  Remember password
+                </p>
+              </>
+            }
           </div>
 
           <button id="LogInButton" type="submit">
-            <LogIn id="LogInButtonIcon" />
-            <p id="SubmitButtonLabel">Login</p>
+            <LogIn id="LogInButtonIcon" size={60} />
+            <p>Log In</p>
           </button>
+
+          <button className="ThirdPartyButton" type="button">
+            <div className="ThirdPartyLogoContainer">
+              <img src={googleLogo} alt="google logo" />
+            </div>
+            <p>Google</p>
+          </button>
+
+          <button className="ThirdPartyButton" type="button">
+            <div className="ThirdPartyLogoContainer">
+              <img src={facebookLogo} alt="facebook logo" />
+            </div>
+            <p>Facebook</p>
+          </button>
+
         </form>
 
-        <Link id="CreateAnAccountButton" to="/signup">Create an Account</Link>
+        <div id="CreateAnAccountButtonContainer">
+          <Link to="/signup">Create an Account</Link>
+        </div>
       </div>
 
-      {/* Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
+      {/* <a href="https://iconscout.com/icons/google" target="_blank">Google Icon</a> by <a href="https://iconscout.com/contributors/icon-mafia">Icon Mafia</a> on <a href="https://iconscout.com">Iconscout</a> */}
+      {/* <a href="https://iconscout.com/icons/facebook" target="_blank">Facebook Icon</a> on <a href="https://iconscout.com">Iconscout</a> */}
 
     </div>
   )

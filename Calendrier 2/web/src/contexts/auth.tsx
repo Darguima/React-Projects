@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, createContext } from 'react'
 
 import calendrierApi from '../services/api'
 
-interface UserSchema {
+export interface UserSchema {
   name: string,
   password?: string | undefined,
   birthdayMonth: number,
@@ -11,11 +11,11 @@ interface UserSchema {
   email: string,
 }
 
-interface DBUserSchema extends UserSchema {
+export interface DBUserSchema extends UserSchema {
   userId: number,
 }
 
-interface CalendrierApiResponse {
+export interface CalendrierApiResponse {
 
   msg: string,
   login: number,

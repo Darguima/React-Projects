@@ -7,7 +7,7 @@ import useAuth from '../../contexts/auth'
 import calendrierLogo from '../../assets/images/logo500.png'
 import googleLogo from '../../assets/images/icons/google-logo.svg'
 import facebookLogo from '../../assets/images/icons/facebook-logo.svg'
-import { User, Lock, Eye, Square, LogIn, Gift, Mail } from 'react-feather'
+import { User, Lock, Eye, EyeOff, Gift, Mail, Square, CheckSquare, LogIn } from 'react-feather'
 
 import './styles.css'
 
@@ -23,6 +23,10 @@ const SignupPage:React.FC<SignupPageProps> = () => {
   const [password, setPassword] = useState('')
   const [birthday, setBirthday] = useState('')
   const [email, setEmail] = useState('')
+
+  const [seePassword, setSeePassword] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [rememberPassword, setRememberPassword] = useState(false)
 
   const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -43,17 +47,17 @@ const SignupPage:React.FC<SignupPageProps> = () => {
     if (signupStatus.login === 1) {
       history.push('/landing')
     } else if (signupStatus.msg === 'param error') {
-      alert('param invalid')
+      setErrorMessage('Invalid value')
     } else if (signupStatus.msg === 'db error -> response.length < 1') {
-      alert('no user')
+      setErrorMessage('Unknown server error while creating the account. Try again later!')
     } else if (signupStatus.msg === 'db error -> response.length > 1') {
-      alert('more that one user')
+      setErrorMessage('Unknown server error. Try again later!')
     } else if (signupStatus.msg === 'email already in use') {
-      alert('email already in use')
+      setErrorMessage('Email already in use. Try another one or login!')
     } else if (signupStatus.msg === 'unknown error') {
-      alert('unknown error')
+      setErrorMessage('Unknown error. Try again later!')
     } else {
-      alert('very unknown error')
+      setErrorMessage('Something went wrong. Try again later!')
     }
   }
 
@@ -69,27 +73,101 @@ const SignupPage:React.FC<SignupPageProps> = () => {
 
           <div id="NameInput" className="SignupInput">
             <User className="SignupInputIcon" strokeWidth="3" />
-            <input value={name} onChange={e => setName(e.target.value)} type="text" placeholder="name"></input>
+            <input
+              value={name}
+              onChange={e => setName(e.target.value)}
+              type="text"
+              placeholder="name"
+            />
           </div>
 
           <div id="PasswordInput" className="SignupInput">
             <Lock className="SignupInputIcon" strokeWidth="3"/>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="password"></input>
-            <Eye id="EyeIcon" strokeWidth="3" />
+            <input
+              type={ seePassword ? 'text' : 'password'}
+              minLength={8}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="password"
+            />
+            {
+              !seePassword &&
+              <Eye
+                id="EyeIcon"
+                strokeWidth="3"
+                onClick={() => {
+                  setSeePassword(!seePassword)
+                }}
+              />
+            }
+
+            {
+              seePassword &&
+              <EyeOff
+                id="EyeIcon"
+                strokeWidth="3"
+                onClick={() => {
+                  setSeePassword(!seePassword)
+                }}
+              />
+            }
           </div>
 
           <div id="BirthdayInput" className="SignupInput">
             <Gift className="SignupInputIcon" strokeWidth="3"/>
-            <input type="date" value={birthday} onChange={e => setBirthday(e.target.value)} placeholder="birthday"></input>
+            <input
+              type="date"
+              value={birthday}
+              onChange={e => setBirthday(e.target.value)}
+              placeholder="birthday"
+            />
           </div>
 
           <div id="EmailInput" className="SignupInput">
             <Mail className="SignupInputIcon" strokeWidth="3"/>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="e-mail"></input>
+            <input
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="e-mail"
+            />
           </div>
 
-          <div id="RememberBox">
-            <Square id="SquareIcon" /> Remeber password
+          {
+            errorMessage !== '' &&
+            <div id="ErrorMessage">
+              {errorMessage}
+            </div>
+          }
+
+          <div id="RememberBox" >
+            {
+              !rememberPassword &&
+              <>
+                <Square
+                  id="SquareIcon"
+                  onClick={() => setRememberPassword(!rememberPassword) }
+                />
+                <p onClick={() => setRememberPassword(!rememberPassword) }>
+                  Remember password
+                </p>
+              </>
+            }
+
+            {
+              rememberPassword &&
+              <>
+                <CheckSquare
+                  id="SquareIcon"
+                  onClick={() => setRememberPassword(!rememberPassword) }
+                />
+                <p
+                  onClick={() => setRememberPassword(!rememberPassword) }
+                >
+                    Remember password
+                </p>
+              </>
+            }
           </div>
 
           <button id="SignUpButton" type="submit">
@@ -122,7 +200,8 @@ const SignupPage:React.FC<SignupPageProps> = () => {
         </div>
       </div>
 
-      {/* Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
+      {/* <a href="https://iconscout.com/icons/google" target="_blank">Google Icon</a> by <a href="https://iconscout.com/contributors/icon-mafia">Icon Mafia</a> on <a href="https://iconscout.com">Iconscout</a> */}
+      {/* <a href="https://iconscout.com/icons/facebook" target="_blank">Facebook Icon</a> on <a href="https://iconscout.com">Iconscout</a> */}
 
     </div>
   )

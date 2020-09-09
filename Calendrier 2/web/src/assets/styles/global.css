@@ -4,19 +4,7 @@
   --color-primary: #76BDD3;
   --color-primary-dark: #427C7F;
   --color-login-background: #F0F0F7;
-  --color-button-border: #76BDD3;
-  --color-border-day-another-month: #00000050;
-  --color-border-day-actual-monthh: #000000;
-  --color-day-container-border: #DEF3F9;
-  --color-event-border: #427C7F;
-  --color-event-not-completed-bg: #76BDD3;
-  --color-today-space-day: #76BDD3;
-  --color-birthday-space-day: #427C7F;
-  --color-float-menu-border: #427C7F;
-  --color-selected-option: #DEF3F9;
-  --color-alert-border: #76BDD3;
-  --color-cancell-button-border: #FF0000;
-  --color-ok-button-border: #427C7F;
+  --color-error-message: #FF0000;
 
   font-size: 62.5%;
 }
@@ -27,24 +15,22 @@
   box-sizing: border-box;
 }
 
+p,
+span {
+  font: 400 1.6rem Ubuntu;
+}
+
+input,
+button,
+button p,
+textarea {
+  font: 400 1.6rem Poppins;
+}
+
 html, body, #root {
   height: 100vh
 }
 
 body{
   background: var(--color-background)
-}
-
-#root{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-}
-
-@media (max-width: 700px) {
-  :root {
-    /*font-size: 60%;*/
-    font-size: 1%;
-  }
 }
