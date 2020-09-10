@@ -11,12 +11,8 @@ import { User, Lock, Eye, EyeOff, Gift, Mail, Square, CheckSquare, LogIn } from 
 
 import './styles.css'
 
-interface SignupPageProps {
-}
-
-const SignupPage:React.FC<SignupPageProps> = () => {
+const SignupPage:React.FC = () => {
   const history = useHistory()
-
   const { signUp } = useAuth()
 
   const [name, setName] = useState('')
@@ -42,8 +38,6 @@ const SignupPage:React.FC<SignupPageProps> = () => {
       email
     )
 
-    console.log(signupStatus)
-
     if (signupStatus.login === 1) {
       history.push('/landing')
     } else if (signupStatus.msg === 'param error') {
@@ -67,12 +61,14 @@ const SignupPage:React.FC<SignupPageProps> = () => {
 
       <div id="Left">
 
-        <p id="Title">Signup</p>
+        <div id="TitleContainer">
+          <p>Signup</p>
+        </div>
 
         <form onSubmit={e => { handleFormSubmit(e) }}>
 
           <div id="NameInput" className="SignupInput">
-            <User className="SignupInputIcon" strokeWidth="3" />
+            <User className="SignupInputIcon" size={60} />
             <input
               value={name}
               onChange={e => setName(e.target.value)}
@@ -82,7 +78,7 @@ const SignupPage:React.FC<SignupPageProps> = () => {
           </div>
 
           <div id="PasswordInput" className="SignupInput">
-            <Lock className="SignupInputIcon" strokeWidth="3"/>
+            <Lock className="SignupInputIcon" size={60}/>
             <input
               type={ seePassword ? 'text' : 'password'}
               minLength={8}
@@ -90,31 +86,30 @@ const SignupPage:React.FC<SignupPageProps> = () => {
               onChange={e => setPassword(e.target.value)}
               placeholder="password"
             />
+
             {
               !seePassword &&
               <Eye
-                id="EyeIcon"
-                strokeWidth="3"
-                onClick={() => {
-                  setSeePassword(!seePassword)
-                }}
+                className="SignupInputIcon"
+                id="PasswordViewIcon"
+                size={60}
+                onClick={() => setSeePassword(!seePassword) }
               />
             }
 
             {
               seePassword &&
               <EyeOff
-                id="EyeIcon"
-                strokeWidth="3"
-                onClick={() => {
-                  setSeePassword(!seePassword)
-                }}
+                className="SignupInputIcon"
+                id="PasswordViewIcon"
+                size={60}
+                onClick={() => setSeePassword(!seePassword) }
               />
             }
           </div>
 
           <div id="BirthdayInput" className="SignupInput">
-            <Gift className="SignupInputIcon" strokeWidth="3"/>
+            <Gift className="SignupInputIcon" size={60}/>
             <input
               type="date"
               value={birthday}
@@ -124,11 +119,11 @@ const SignupPage:React.FC<SignupPageProps> = () => {
           </div>
 
           <div id="EmailInput" className="SignupInput">
-            <Mail className="SignupInputIcon" strokeWidth="3"/>
+            <Mail className="SignupInputIcon" size={60} />
             <input
-              type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
+              type="email"
               placeholder="e-mail"
             />
           </div>
@@ -148,7 +143,9 @@ const SignupPage:React.FC<SignupPageProps> = () => {
                   id="SquareIcon"
                   onClick={() => setRememberPassword(!rememberPassword) }
                 />
-                <p onClick={() => setRememberPassword(!rememberPassword) }>
+                <p
+                  onClick={() => setRememberPassword(!rememberPassword) }
+                >
                   Remember password
                 </p>
               </>
@@ -164,40 +161,60 @@ const SignupPage:React.FC<SignupPageProps> = () => {
                 <p
                   onClick={() => setRememberPassword(!rememberPassword) }
                 >
-                    Remember password
+                  Remember password
                 </p>
               </>
             }
           </div>
 
           <button id="SignUpButton" type="submit">
-            <LogIn id="SignUpButtonIcon" />
-            <p id="SubmitButtonLabel">Sign up</p>
+            <LogIn id="SignUpButtonIcon" size={60} />
+            <p>Sign up</p>
           </button>
+
+          <button className="ThirdPartyButton" type="button">
+            <div className="ThirdPartyLogoContainer">
+              <img src={googleLogo} alt="google logo" />
+            </div>
+            <p>Google</p>
+          </button>
+
+          <button className="ThirdPartyButton" type="button">
+            <div className="ThirdPartyLogoContainer">
+              <img src={facebookLogo} alt="facebook logo" />
+            </div>
+            <p>Facebook</p>
+          </button>
+
         </form>
 
-        <Link id="CreateAnAccountButton" to="/login">Already have an account</Link>
+        <div id="AlreadyHaveAnAccountButtonContainer">
+          <Link to="/login">Already have an account</Link>
+        </div>
       </div>
 
       <div id="Right">
         <img id="calendrierLogo" src={calendrierLogo} alt="logo" />
-        <div id="ThirdPartySignupContainer">
+        <div className="ThirdPartyContainer" id="RightThirdPartyContainer">
 
-          <button id="GoogleSignupButton" type="button">
-            <div id="ThirdPartySignupLogoContainer">
+          <button type="button">
+            <div className="ThirdPartyLogoContainer">
               <img src={googleLogo} alt="google logo" />
             </div>
-            <p id="ThirdPartySignupLabel">Google</p>
+            <p>Google</p>
           </button>
 
-          <button id="FacebookSignupButton" type="button">
-            <div id="ThirdPartySignupLogoContainer">
+          <button type="button">
+            <div className="ThirdPartyLogoContainer">
               <img src={facebookLogo} alt="facebook logo" />
             </div>
-            <p id="ThirdPartySignupLabel">Facebook</p>
+            <p>Facebook</p>
           </button>
 
         </div>
+
+        <p id="SignupInstructions">swipe up to signup</p>
+
       </div>
 
       {/* <a href="https://iconscout.com/icons/google" target="_blank">Google Icon</a> by <a href="https://iconscout.com/contributors/icon-mafia">Icon Mafia</a> on <a href="https://iconscout.com">Iconscout</a> */}
