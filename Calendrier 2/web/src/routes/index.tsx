@@ -15,13 +15,13 @@ const Routes:React.FC = () => {
     )
   }
 
-  if (signed) {
+  if (!signed) {
     return (
-      <AppRoutes />
+      <AuthRoutes />
     )
   } else {
     return (
-      <AuthRoutes />
+      <AppRoutes />
     )
   }
 }

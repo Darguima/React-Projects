@@ -1,10 +1,138 @@
 #LoadingPageContainer {
-  
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  
+  justify-content: space-evenly;
+
+  height: 100vh;
+  min-height: 300px;
+  width: 100vw;
+  min-width: 380px;
+
+  background: var(--color-primary-light);
+
+  font-size: 2.5rem;
+}
+
+#LoadingPageContainer #calendrierLogo {
+  height: 50%;
+}
+
+#LoadingPageContainer #LoadingLabel{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  height: 25%;
+}
+
+#LoadingPageContainer #Loading1{
+  font-size: 2em;
+}
+
+#LoadingPageContainer #Loading2{
+  font-size: 1em;
+}
+
+@media (max-height: 700px) {
+  #LoadingPageContainer {
   font-size: 2rem;
-  
+  }
+
+  #LoadingPageContainer #LoadingLabel {
+    height: 20%;
+  }
+}
+
+@media (max-height: 600px) {
+  #LoadingPageContainer {
+  font-size: 1.7rem;
+  }
+
+  #LoadingPageContainer #LoadingLabel {
+    height: 15%;
+  }
+}
+
+@media (max-height: 500px) {
+  #LoadingPageContainer {
+  font-size: 1.5rem;
+  }
+
+  #LoadingPageContainer #LoadingLabel {
+    height: 10%;
+  }
+}
+
+@media (max-height: 400px) {
+  #LoadingPageContainer {
+  font-size: 1.3rem;
+  }
+
+  #LoadingPageContainer #LoadingLabel {
+    height: 7%;
+  }
+}
+
+
+
+@media (max-width: 700px) {
+  #LoadingPageContainer {
+  font-size: 2rem;
+  }
+
+  #LoadingPageContainer #calendrierLogo {
+    height: 50%;
+  }
+
+  #LoadingPageContainer #LoadingLabel {
+    height: 20%;
+  }
+}
+
+@media (max-width: 600px) {
+  #LoadingPageContainer {
+  font-size: 1.7rem;
+  }
+
+  #LoadingPageContainer #calendrierLogo {
+    height: 40%;
+  }
+
+  #LoadingPageContainer #LoadingLabel {
+    height: 15%;
+  }
+}
+
+@media (max-width: 500px) {
+  #LoadingPageContainer {
+  font-size: 1.5rem;
+  }
+
+  #LoadingPageContainer #calendrierLogo {
+    height: 35%;
+  }
+
+  #LoadingPageContainer #LoadingLabel {
+    height: 10%;
+  }
+}
+
+@media (max-width: 400px) {
+  #LoadingPageContainer {
+  font-size: 1.3rem;
+  }
+
+  #LoadingPageContainer #calendrierLogo {
+    height: 30%;
+  }
+
+  #LoadingPageContainer #LoadingLabel {
+    height: 7%;
+  }
+
+  #LoadingPageContainer #Loading2{
+    font-size: 1.2em;
+  }
 }
