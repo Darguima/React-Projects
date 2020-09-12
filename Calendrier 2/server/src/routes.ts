@@ -44,11 +44,31 @@ routes.delete('/deleteUserAccount', [
   body('confirmPassword').not().isEmpty({ ignore_whitespace: true }).isString().isLength({ min: 8 })
 ], usersController.deleteUserAccount)
 
-routes.get('/events', eventsController.indexAll)
+routes.get('/indexEvents', eventsController.index)
+routes.post('/createEvent', [
+  body('name').not().isEmpty({ ignore_whitespace: true }).isString(),
+  body('month').isInt({ min: 1, max: 12 }),
+  body('day').isInt({ min: 1, max: 31 }),
+  body('year').isInt({ min: 0 }),
+  body('hour').isInt({ min: 0, max: 1439 }),
+  body('description').isString().optional(),
+  body('completed').isBoolean(),
+  body('autoComplete').isBoolean()
+], eventsController.create)
+routes.put('/editEvent', [
+  body('eventId').isInt({ min: 0 }),
 
-routes.get('/event', eventsController.index)
-routes.post('/event', eventsController.create)
-routes.put('/event', eventsController.edit)
-routes.delete('/event', eventsController.delete)
+  body('name').not().isEmpty({ ignore_whitespace: true }).isString().optional(),
+  body('month').isInt({ min: 1, max: 12 }).optional(),
+  body('day').isInt({ min: 1, max: 31 }).optional(),
+  body('year').isInt({ min: 0 }).optional(),
+  body('hour').isInt({ min: 0, max: 1439 }).optional(),
+  body('description').isString().optional().optional(),
+  body('completed').isBoolean().optional(),
+  body('autoComplete').isBoolean().optional()
+], eventsController.edit)
+routes.delete('/deleteEvent', [
+  body('eventId').isInt({ min: 0 })
+], eventsController.delete)
 
 export default routes

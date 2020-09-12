@@ -9,7 +9,7 @@ export async function up (knex: Knex) {
     table.integer('day').notNullable()
     table.integer('year').notNullable()
     table.integer('hour').notNullable()
-    table.text('description').notNullable()
+    table.text('description').defaultTo('').notNullable()
     table.boolean('completed').notNullable()
     table.boolean('autoComplete').notNullable()
 
