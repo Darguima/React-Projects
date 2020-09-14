@@ -11,8 +11,21 @@
 
 Typescript interface:
 
-```
-interface CalendrierApiResponse {
+``` 
+interface UserSchema {
+  name: string,
+  password: string | undefined,
+  birthdayMonth: number,
+  birthdayDay: number,
+  birthdayYear: number,
+  email: string,
+}
+
+interface DBUserSchema extends UserSchema {
+  userId: number,
+}
+
+interface UserCalendrierApiResponse {
 
   msg: string,
   login: number,
@@ -29,19 +42,6 @@ interface CalendrierApiResponse {
 
   errno?: number,
   code?: string,
-} 
-
-interface UserSchema {
-  name: string,
-  password: string | undefined,
-  birthdayMonth: number,
-  birthdayDay: number,
-  birthdayYear: number,
-  email: string,
-}
-
-interface DBUserSchema extends UserSchema {
-  userId: number,
 }
 ```
 
@@ -235,3 +235,243 @@ Used in
 * Need a JWT token with the userId
 
 * confirmPassword - .not().isEmpty({ ignore_whitespace: true }).isString().isLength({ min: 8 })
+
+### EventsController - Routes for managing user events
+
+* /indexEvents
+* /createEvent
+* /editEvent
+* /deleteEvent
+
+Typescript interface:
+
+```
+interface EventSchema {
+  name: string,
+  month: number,
+  day: number,
+  year: number,
+  hour: number,
+  description?: string,
+  completed: boolean,
+  autoComplete: boolean,
+  userId?: number,
+}
+
+interface DBEventSchema extends EventSchema {
+  eventId: number,
+  userId: number,
+}
+
+interface EventCalendrierApiResponse {
+
+  msg: string,
+
+  events?: Array<DBEventSchema>,
+  event?: DBEventSchema,
+
+  error?: [ {
+    value?: string,
+    msg: string,
+    param: string,
+    location: string
+  }],
+
+  errno?: number,
+  code?: string,
+} 
+```
+
+#### Possible Response
+
+##### express-validator error
+
+HTTP Code - 400
+
+Used in
+
+* /createEvent
+* /editEvent
+* /deleteEvent
+
+```
+const paramsError = validationResult(request)
+
+{
+  msg: 'param error',
+  error: paramsError.array()
+}
+```
+
+##### Database did not return any event
+
+HTTP Code - 422
+
+Used in
+
+* /editEvent
+* /deleteEvent
+
+```
+{
+  msg: 'db error -> response.length < 1',
+}
+```
+
+##### Database returned more than one event
+
+HTTP Code - 422
+
+Used in
+
+* /editEvent
+* /deleteEvent
+
+```
+{
+  msg: 'db error -> response.length > 1',
+}
+```
+
+##### Tried to edit/remove another user's event
+
+HTTP Code - 403
+
+Used in
+
+* /editEvent
+* /deleteEvent
+
+```
+{
+  msg: 'forbidden'
+}
+```
+
+##### Unknown error
+
+HTTP Code - 400
+
+- - -
+
+Used in
+
+* /editEvent
+* /deleteEvent
+
+```
+{
+  msg: 'An unknown error has occurred - status 0'
+}
+```
+
+- - -
+
+Used in
+
+* /indexEvents
+* /createEvent
+* /editEvent
+* /deleteEvent
+
+```
+{
+  ...err,
+  msg: 'unknown error',
+}
+```
+
+- - -
+
+##### Successful request
+
+HTTP Code - 200
+
+- - -
+
+Used in
+
+* /indexEvents
+
+```
+{
+  msg: 'success',
+  events: Array<DBEventSchema>,
+}
+```
+
+- - -
+
+Used in
+
+* /createEvent
+* /editEvent
+
+```
+{
+  msg: 'success',
+  event: DBEventSchema,
+}
+```
+
+- - -
+
+Used in
+
+* /deleteEvent
+
+```
+{
+  msg: 'success',
+}
+```
+
+- - -
+
+#### Routes Info
+
+##### /indexEvents
+
+###### Params
+
+* Need a JWT token with the userId
+
+##### /createEvent
+
+###### Params
+
+* Need a JWT token with the userId
+
+* name - .not().isEmpty({ ignore_whitespace: true }).isString(),
+* month - .isInt({ min: 1, max: 12 }),
+* day - .isInt({ min: 1, max: 31 }),
+* year - .isInt({ min: 0 }),
+* hour - .isInt({ min: 0, max: 1439 }),
+* description - .isString().optional(),
+* completed - .isBoolean(),
+* autoComplete - .isBoolean()
+
+##### /editEvent
+
+###### Params
+
+* Need a JWT token with the userId
+
+* eventId - .isInt({ min: 0 }),
+
+* name - .not().isEmpty({ ignore_whitespace: true }).isString().optional(),
+* month - .isInt({ min: 1, max: 12 }).optional(),
+* day - .isInt({ min: 1, max: 31 }).optional(),
+* year - .isInt({ min: 0 }).optional(),
+* hour - .isInt({ min: 0, max: 1439 }).optional(),
+* description - .isString().optional().optional(),
+* completed - .isBoolean().optional(),
+* autoComplete - .isBoolean().optional()
+
+##### /deleteEvent
+
+###### Params
+
+* Need a JWT token with the userId
+
+* eventId - .isInt({ min: 0 })
