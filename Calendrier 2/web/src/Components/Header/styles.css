@@ -1,0 +1,50 @@
+#HeaderContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 7vh;
+
+  background: var(--color-primary);
+
+  padding: 0.5%;
+
+  font-size: 1rem;
+}
+
+#HeaderContainer a {
+  text-decoration: none;
+  color: black;
+}
+
+#HeaderContainer .Buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  height: 70%;
+  width: auto;
+}
+
+#HeaderContainer .Buttons svg {
+  height: 100%;
+  width: 100%;
+}
+
+#HeaderContainer .selectDate {
+  width: 20%;
+}
+
+#HeaderContainer #LandingButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  font: 600 3em Poppins;
+  color: var(--color-primary-dark);
+  cursor: pointer;
+  width: 20%;
+}

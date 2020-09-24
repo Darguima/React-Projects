@@ -4,6 +4,8 @@ import LoadingPage from '../pages/LoadingPage'
 import AppRoutes from './app.routes'
 import AuthRoutes from './auth.routes'
 
+import { EventsProvider } from '../contexts/events'
+
 import useAuth from '../contexts/auth'
 
 const Routes:React.FC = () => {
@@ -21,7 +23,9 @@ const Routes:React.FC = () => {
     )
   } else {
     return (
-      <AppRoutes />
+      <EventsProvider>
+        <AppRoutes />
+      </EventsProvider>
     )
   }
 }
