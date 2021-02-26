@@ -1,8 +1,8 @@
-# React Projects
+# Mini Projects
 
 ## Description
 
-* Repository with several projects made in React JS and React Native
+* Repository with several projects made in React JS, React Native, Elixir and all that I want learn
 
 ## Info
 
