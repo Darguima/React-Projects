@@ -8,6 +8,8 @@ defmodule RocketpayWeb.Router do
   scope "/api", RocketpayWeb do
     pipe_through :api
 
+    post "/users", UsersController, :create
+
     get "/:filename", WelcomeController, :index
   end
 
